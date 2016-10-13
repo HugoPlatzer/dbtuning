@@ -62,25 +62,39 @@
   Which tuning principle did you apply? Pick the one that describes
   this approach best (``thing globally, fix locally'' is too general).
 
-    \subsection*{Efficient Approach 2: (NAME)}
+    \subsection*{Efficient Approach 2: (SQL COPY statement)}
 
   \paragraph{Implementation}
 
-  Describe in a few lines how this approach works and show the query
-  that you use. You may also show small (!) code snippets if you think
-  they help the understanding.
+  Our data is in the form of a TSV file meaning each line contains a
+  (auth, pubid) tuple, the two values separated by a TAB character. Data like this can be
+  directly loaded into the Postgres database by using the COPY command. This can be
+  done using the psql prompt:
+  
+  {\small
+\begin{verbatim}
+  \copy auth from ~/dbtuning/data/auth.tsv DELIMITER e’\t’
+\end{verbatim}
+}
+
+It can also be done with JDBC using the CopyManager class and a FileReader
+for the input:
 
 {\small
 \begin{verbatim}
-    MY SQL QUERY ...
+	public static void insertCopyFrom(Connection con, String filename, int n)
+	        throws SQLException, IOException {
+	    CopyManager copyManager = new CopyManager((BaseConnection) con);
+	    FileReader fileReader = new FileReader(filename);
+		
+	    copyManager.copyIn("COPY auth from STDIN WITH DELIMITER '\t'", fileReader);
+	}
 \end{verbatim}
 }
 
   \paragraph{Why is this approach efficient?}
 
-  Explain, why this approach is more efficient than the
-  straightforward approach. Where does the system save the time? Be
-  clear and precise!
+  
   
   Important: Cite the references that you used to answer this
   question, for example, with footnotes\footnote{PostgreSQL 9.0
