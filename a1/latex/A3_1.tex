@@ -1,7 +1,6 @@
 \documentclass[11pt]{scrartcl}
 
 \usepackage{url,float}
-\usepackage{breakurl}
 
 \title{
   \textbf{\large Database Tuning -- Assignment 1}\\
@@ -45,7 +44,7 @@
 
   \paragraph{Why is this approach efficient?}
 
-  This approach is more efficent, since we don't need to write a log for every single insert. This frees a lot of disk access time. Furthermore there is a lot less connection overhead, because the packets we send are bigger.\footnote{https://dbresearch.uni-salzburg.at/teaching/2016ws/dbt/dbt_01-handout-1x1.pdf, Page 23-27}
+  This approach is more efficent, since we don't need to write a log for every single insert. This frees a lot of disk access time. Furthermore there is a lot less connection overhead, because the packets we send are bigger.\footnote{\url{https://dbresearch.uni-salzburg.at/teaching/2016ws/dbt/dbt_01-handout-1x1.pdf}, Page 23-27}
 
   \paragraph{Tuning principle}
 
@@ -98,11 +97,11 @@ for the input:
   
   \item{Postgres Documentation, COPY statement}
   
-  \burl{https://www.postgresql.org/docs/9.2/static/sql-copy.html}
+  \url{https://www.postgresql.org/docs/9.2/static/sql-copy.html}
   
   \item{Stackoverflow, 'How to copy data from file to Postgres using JDBC'}
   
-  \burl{https://stackoverflow.com/questions/6958965/
+  \url{https://stackoverflow.com/questions/6958965/
   how-to-copy-a-data-from-file-to-postgresql-using-jdbc}
   
   \end{itemize}
