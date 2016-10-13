@@ -21,46 +21,34 @@
 
   \paragraph{Implementation}
 
-  Describe in a few lines how this approach works and show the query
-  that you use. You may also show small (!) code snippets if you think
-  they help the understanding.
+  Every tuple gets inserted individually, by iterating over each line from the tsv file and executing the insert.
 
 {\small
 \begin{verbatim}
-    MY SQL QUERY ...
+    "INSERT INTO auth (name, pubid) values (?, ?)"
 \end{verbatim}
 }
 
-  \subsection*{Efficient Approach 1: (NAME)}
+  \subsection*{Efficient Approach 1: (Batch/Bulk Insert)}
 
   \paragraph{Implementation}
 
-  Describe in a few lines how this approach works and show the query
-  that you use. You may also show small (!) code snippets if you think
-  they help the understanding.
+  With this method, we don't execute the insert for each tuple seperatly. We keep adding tuples to a batch, until it is big enough or there are no tuples left. After the batch is big enough, we execute the insert for our whole batch.
 
 
 {\small
 \begin{verbatim}
-    MY SQL QUERY ...
+    "INSERT INTO auth (name, pubid) values (?, ?)"
 \end{verbatim}
 }
 
   \paragraph{Why is this approach efficient?}
 
-  Explain, why this approach is more efficient than the
-  straightforward approach. Where does the system save the time? Be
-  clear and precise!
-  
-  Important: Cite the references that you used to answer this
-  question, for example, with footnotes\footnote{PostgreSQL 9.0
-    Documentation, Chapter 3.5,
-    \url{http://www.postgresql.org/docs/9.0/static/tutorial-window.html}}.
+  This approach is more efficent, since we don't need to write a log for every single insert. This frees a lot of disk access time. Furthermore there is a lot less connection overhead, because the packets we send are bigger.\footnote{https://dbresearch.uni-salzburg.at/teaching/2016ws/dbt/dbt_01-handout-1x1.pdf, Page 23-27}
 
   \paragraph{Tuning principle}
 
-  Which tuning principle did you apply? Pick the one that describes
-  this approach best (``thing globally, fix locally'' is too general).
+  start-up costs are high; running costs are low
 
     \subsection*{Efficient Approach 2: (NAME)}
 
