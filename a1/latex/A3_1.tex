@@ -1,6 +1,7 @@
 \documentclass[11pt]{scrartcl}
 
 \usepackage{url,float}
+\usepackage{breakurl}
 
 \title{
   \textbf{\large Database Tuning -- Assignment 1}\\
@@ -73,7 +74,7 @@
   
   {\small
 \begin{verbatim}
-  \copy auth from ~/dbtuning/data/auth.tsv DELIMITER e’\t’
+  \copy auth from ~/dbtuning/data/auth.tsv DELIMITER e'\t'
 \end{verbatim}
 }
 
@@ -94,17 +95,33 @@ for the input:
 
   \paragraph{Why is this approach efficient?}
 
+  Compared to the straightforward approach, this creates one ''query''
+  for the whole file, avoiding excessive network roundtrips and minimizing
+  data overhead (query parameters). The database systems' insert code
+  is only called once. Also it prevents lots of unneccessary
+  logfile access. Most of the file/data processing
+  is done on the server, this might also be more efficient than
+  processing the file manually line per line in Java.
   
   
-  Important: Cite the references that you used to answer this
-  question, for example, with footnotes\footnote{PostgreSQL 9.0
-    Documentation, Chapter 3.5,
-    \url{http://www.postgresql.org/docs/9.0/static/tutorial-window.html}}.
+  \subparagraph{References:}
+  
+  \begin{itemize}
+  
+  \item{Postgres Documentation, COPY statement}
+  
+  \burl{https://www.postgresql.org/docs/9.2/static/sql-copy.html}
+  
+  \item{Stackoverflow, 'How to copy data from file to Postgres using JDBC'}
+  
+  \burl{https://stackoverflow.com/questions/6958965/
+  how-to-copy-a-data-from-file-to-postgresql-using-jdbc}
+  
+  \end{itemize}
 
   \paragraph{Tuning principle}
-
-  Which tuning principle did you apply? Pick the one that describes
-  this approach best (``thing globally, fix locally'' is too general).
+  
+  ''Start-Up Costs Are High; Running Costs Are Low''
 
   \subsection*{Runtime Experiment}
 
@@ -116,7 +133,7 @@ for the input:
     Approach 1 (NAME) & ... \\
     Approach 2 (NAME) & ...     
   \end{tabular}
-  \end{table}
+  \end{table}XXX
 
   \bigskip
 
@@ -134,6 +151,6 @@ for the input:
 
   \subsection*{Time Spent on this Assignment}
 
-  Time in hours per person: {\bf XXX}
+  Time in hours per person: {\bf 3.14159}
 
 \end{document}
