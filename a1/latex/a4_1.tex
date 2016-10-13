@@ -1,0 +1,126 @@
+\documentclass[11pt]{scrartcl}
+
+\usepackage{url,float}
+
+\title{
+  \textbf{\large Database Tuning -- Assignment 1}\\
+  Uploading Data to the Database
+}
+
+\author{
+ Group Name (e.g. A1, B5, B3)\\
+ \large Lastname1 Firstname1, StudentID1 \\
+ \large Lastname2 Firstname2, StudentID2 \\
+ \large Lastname3 Firstname3, StudentID3 
+}
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Straightforward Implementation}
+
+  \paragraph{Implementation}
+
+  Describe in a few lines how this approach works and show the query
+  that you use. You may also show small (!) code snippets if you think
+  they help the understanding.
+
+{\small
+\begin{verbatim}
+    MY SQL QUERY ...
+\end{verbatim}
+}
+
+  \subsection*{Efficient Approach 1: (NAME)}
+
+  \paragraph{Implementation}
+
+  Describe in a few lines how this approach works and show the query
+  that you use. You may also show small (!) code snippets if you think
+  they help the understanding.
+
+
+{\small
+\begin{verbatim}
+    MY SQL QUERY ...
+\end{verbatim}
+}
+
+  \paragraph{Why is this approach efficient?}
+
+  Explain, why this approach is more efficient than the
+  straightforward approach. Where does the system save the time? Be
+  clear and precise!
+  
+  Important: Cite the references that you used to answer this
+  question, for example, with footnotes\footnote{PostgreSQL 9.0
+    Documentation, Chapter 3.5,
+    \url{http://www.postgresql.org/docs/9.0/static/tutorial-window.html}}.
+
+  \paragraph{Tuning principle}
+
+  Which tuning principle did you apply? Pick the one that describes
+  this approach best (``thing globally, fix locally'' is too general).
+
+    \subsection*{Efficient Approach 2: (NAME)}
+
+  \paragraph{Implementation}
+
+  Describe in a few lines how this approach works and show the query
+  that you use. You may also show small (!) code snippets if you think
+  they help the understanding.
+
+{\small
+\begin{verbatim}
+    MY SQL QUERY ...
+\end{verbatim}
+}
+
+  \paragraph{Why is this approach efficient?}
+
+  Explain, why this approach is more efficient than the
+  straightforward approach. Where does the system save the time? Be
+  clear and precise!
+  
+  Important: Cite the references that you used to answer this
+  question, for example, with footnotes\footnote{PostgreSQL 9.0
+    Documentation, Chapter 3.5,
+    \url{http://www.postgresql.org/docs/9.0/static/tutorial-window.html}}.
+
+  \paragraph{Tuning principle}
+
+  Which tuning principle did you apply? Pick the one that describes
+  this approach best (``thing globally, fix locally'' is too general).
+
+  \subsection*{Runtime Experiment}
+
+  \begin{table}[H]
+  \begin{tabular}{l|r}
+    Approach & Runtime [sec] \\
+    \hline
+    Straightforward & ... \\
+    Approach 1 (NAME) & ... \\
+    Approach 2 (NAME) & ...     
+  \end{tabular}
+  \end{table}
+
+  \bigskip
+
+  \noindent Notes:
+  \begin{itemize}
+  \item For the straightforward approach you are allowed to import
+    only a subset of the tuples (e.g., 10000 tuples) and estimate the
+    overall runtime. The timings for all other approaches should be
+    real measurements over the whole dataset.
+  \item Specify the setting of the experiment, i.e., where is the
+    database server (local machine, database server at the
+    department), where is the client (wired/wireless network of the
+    department)?
+\end{itemize}
+
+  \subsection*{Time Spent on this Assignment}
+
+  Time in hours per person: {\bf XXX}
+
+\end{document}
