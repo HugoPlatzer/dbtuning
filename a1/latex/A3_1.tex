@@ -1,6 +1,7 @@
 \documentclass[11pt]{scrartcl}
 
 \usepackage{url,float}
+\usepackage{graphicx}
 
 \title{
   \textbf{\large Database Tuning -- Assignment 1}\\
@@ -33,7 +34,8 @@
 
   \paragraph{Implementation}
 
-  With this method, we don't execute the insert for each tuple seperatly. We keep adding tuples to a batch, until it is big enough or there are no tuples left. After the batch is big enough, we execute the insert for our whole batch.
+  With this method, we don't execute the insert for each tuple seperatly. We keep adding tuples to a batch, until it is big enough or there are no tuples left. After the batch is big enough, we execute the insert for our whole batch.\\\\
+  \includegraphics{batch.jpg}
 
 
 {\small
@@ -70,13 +72,13 @@ for the input:
 
 {\small
 \begin{verbatim}
-	public static void insertCopyFrom(Connection con, String filename, int n)
-	        throws SQLException, IOException {
-	    CopyManager copyManager = new CopyManager((BaseConnection) con);
-	    FileReader fileReader = new FileReader(filename);
-		
-	    copyManager.copyIn("COPY auth from STDIN WITH DELIMITER '\t'", fileReader);
-	}
+  public static void insertCopyFrom(Connection con, String filename, int n)
+          throws SQLException, IOException {
+      CopyManager copyManager = new CopyManager((BaseConnection) con);
+      FileReader fileReader = new FileReader(filename);
+    
+      copyManager.copyIn("COPY auth from STDIN WITH DELIMITER '\t'", fileReader);
+  }
 \end{verbatim}
 }
 

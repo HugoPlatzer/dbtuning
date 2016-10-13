@@ -51,7 +51,6 @@ public class DBConnect {
 			stmt.addBatch();
 			if (++count % batchSize == 0) {
 				stmt.executeBatch();
-				count = 0;
 			}
 			i++;
 			data = parser.parseLine();
