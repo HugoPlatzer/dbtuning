@@ -1,5 +1,8 @@
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
+import org.postgresql.copy.CopyManager;
+import org.postgresql.core.BaseConnection;
 
 public class DBConnect {
 
@@ -52,6 +55,13 @@ public class DBConnect {
 		stmt.executeBatch();
 		stmt.close();
 	}
+	
+	public static void insertCopyFrom(Connection con, String filename, int n) throws SQLException, IOException {
+		CopyManager copyManager = new CopyManager((BaseConnection) con);
+		FileReader fileReader = new FileReader(filename);
+		
+		copyManager.copyIn("COPY auth from STDIN WITH DELIMITER '\t'", fileReader);
+	}
 
 	public static void main(String[] args) throws IOException {
 		String host = "biber.cosy.sbg.ac.at";
@@ -60,7 +70,8 @@ public class DBConnect {
 		String user = "hplatzer";
 		String pwd = "Aicae4paed4e";
 		String url = "jdbc:postgresql://" + host + ":" + port + "/" + database;
-		TSVParser parser = new TSVParser("../../data/auth.tsv");
+		String filename = "../../data/auth.tsv";
+		TSVParser parser = new TSVParser(filename);
 		int n = 1000;
 		int batchSize = 10;
 		
@@ -68,6 +79,7 @@ public class DBConnect {
 			long startTime = System.nanoTime();
 			
 			insertBatch(con, parser, n, batchSize);
+			insertCopyFrom(con, filename, n);
 			
 			System.out.println((System.nanoTime() - startTime) / 1000000 + "ms");
 		} catch (SQLException e) {
