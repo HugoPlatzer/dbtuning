@@ -27,14 +27,46 @@ public class DBConnect {
         String user = "hplatzer";
         String pwd = "Aicae4paed4e";
         String url = "jdbc:postgresql://" + host + ":" + port + "/" + database;
-        String query = "INSERT INTO auth (pubid, name) values (1, 'hugo')";
+        String query = "INSERT INTO auth (pubid, name) values (?, ?)";
         
         try (    Connection con = DriverManager.getConnection(url, user, pwd);
-                 Statement stmt = con.createStatement();) {
-            stmt.executeUpdate(query);
+                 PreparedStatement stmt = con.prepareStatement(query);) {
+        	for(int i = 0; i < 10000; i++){
+        		//Daten einlesen
+	            stmt.setInt(1, id);
+	            stmt.setString(2, name);
+	            stmt.executeUpdate();
+        	}
+        	
+        	stmt.close();
+        	con.close();
+            
             System.out.println("Hi");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        try (    Connection con = DriverManager.getConnection(url, user, pwd);
+                PreparedStatement stmt = con.prepareStatement(query);) {
+        		final int batchSize = 1000;
+        		int count = 0;
+        	for(int i = 0; i < 10000; i++){
+       		//Daten einlesen
+	            stmt.setInt(1, id);
+	            stmt.setString(2, name);
+	            stmt.addBatch();
+	            
+	        if(++count % batchSize == 0){
+	        	stmt.executeBatch();
+	        }
+       	}
+        stmt.executeBatch();
+       	stmt.close();
+       	con.close();
+           
+           System.out.println("Hi");
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
     }
 }
