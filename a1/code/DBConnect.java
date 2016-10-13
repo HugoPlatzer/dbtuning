@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.sql.*;
 
 public class DBConnect {
@@ -20,7 +21,7 @@ public class DBConnect {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String host = "biber.cosy.sbg.ac.at";
         String port = "5432";
         String database = "dbtuning_ws2016";
@@ -29,42 +30,53 @@ public class DBConnect {
         String url = "jdbc:postgresql://" + host + ":" + port + "/" + database;
         String query = "INSERT INTO auth (pubid, name) values (?, ?)";
         
-        try (    Connection con = DriverManager.getConnection(url, user, pwd);
-                 PreparedStatement stmt = con.prepareStatement(query);) {
-        	for(int i = 0; i < 10000; i++){
-        		//Daten einlesen
-	            stmt.setInt(1, id);
-	            stmt.setString(2, name);
-	            stmt.executeUpdate();
-        	}
+        //Normales Insert
+        try (Connection con = DriverManager.getConnection(url, user, pwd);){
+                PreparedStatement stmt = con.prepareStatement(query);
+        		TSVParser parser = new TSVParser("auth.tsv");
+        		long startTime = System.nanoTime();
+    		
+        		for(int i = 0; i < 10000; i++){
+        			String[] data = parser.parseLine();
+        		
+        			stmt.setInt(1, Integer.parseInt(data[0]));
+        			stmt.setString(2, data[1]);
+	            	stmt.executeUpdate();
+        		}
         	
-        	stmt.close();
-        	con.close();
-            
-            System.out.println("Hi");
+        		System.out.println((System.nanoTime() - startTime) / 1000000 + "ms");
+        		parser.close();
+        		stmt.close();
+        		con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         
-        try (    Connection con = DriverManager.getConnection(url, user, pwd);
-                PreparedStatement stmt = con.prepareStatement(query);) {
-        		final int batchSize = 1000;
-        		int count = 0;
+        //Batch Insert
+        try (Connection con = DriverManager.getConnection(url, user, pwd);){
+        	PreparedStatement stmt = con.prepareStatement(query);
+        	final int batchSize = 1000;
+        	int count = 0;
+        	TSVParser parser = new TSVParser("auth.tsv");
+
+        	long startTime = System.nanoTime();
         	for(int i = 0; i < 10000; i++){
-       		//Daten einlesen
-	            stmt.setInt(1, id);
-	            stmt.setString(2, name);
+        		String[] data = parser.parseLine();
+        	
+	            stmt.setInt(1, Integer.parseInt(data[0]));
+	            stmt.setString(2, data[1]);
 	            stmt.addBatch();
 	            
-	        if(++count % batchSize == 0){
-	        	stmt.executeBatch();
-	        }
-       	}
-        stmt.executeBatch();
-       	stmt.close();
-       	con.close();
-           
-           System.out.println("Hi");
+	            if(++count % batchSize == 0){
+	            	stmt.executeBatch();
+	            	count = 0;
+	            }
+        	}
+
+	        parser.close();
+	        stmt.executeBatch();
+	       	stmt.close();
+	       	con.close();
        } catch (SQLException e) {
            e.printStackTrace();
        }
