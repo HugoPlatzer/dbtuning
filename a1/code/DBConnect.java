@@ -73,6 +73,7 @@ public class DBConnect {
 	            }
         	}
 
+        	System.out.println((System.nanoTime() - startTime) / 1000000 + "ms");
 	        parser.close();
 	        stmt.executeBatch();
 	       	stmt.close();
