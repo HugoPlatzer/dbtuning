@@ -11,7 +11,7 @@ public class TSVParser {
     public String[] parseLine() throws IOException {
     	List<String> values = new ArrayList<>();
     	String line = br.readLine();
-    	return line.split("\\t");
+    	return (line == null) ? null : line.split("\\t");
     }
     
     public void close() throws IOException {
