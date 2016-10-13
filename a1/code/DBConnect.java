@@ -60,18 +60,20 @@ public class DBConnect {
 		String user = "hplatzer";
 		String pwd = "Aicae4paed4e";
 		String url = "jdbc:postgresql://" + host + ":" + port + "/" + database;
-
+		TSVParser parser = new TSVParser("../../data/auth.tsv");
+		int n = 1000;
+		int batchSize = 10;
+		
 		try (Connection con = DriverManager.getConnection(url, user, pwd);) {
-
-			TSVParser parser = new TSVParser("../../data/auth.tsv");
 			long startTime = System.nanoTime();
 			
-			insertBatch(con, parser, 100, 10);
+			insertBatch(con, parser, n, batchSize);
 			
 			System.out.println((System.nanoTime() - startTime) / 1000000 + "ms");
-			parser.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		parser.close();
 	}
 }
