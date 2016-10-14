@@ -38,13 +38,6 @@
   With this method, we don't execute the insert for each tuple seperatly. We keep adding tuples to a batch, until it is big enough or there are no tuples left. After the batch is big enough, we execute the insert for our whole batch.\\\\
   \includegraphics{batch.jpg}
 
-
-{\small
-\begin{verbatim}
-    "INSERT INTO auth (name, pubid) values (?, ?)"
-\end{verbatim}
-}
-
   \paragraph{Why is this approach efficient?}
 
   This approach is more efficent, since we don't need to write a log for every single insert. This frees a lot of disk access time. Furthermore there is a lot less connection overhead, because the packets we send are bigger.\footnote{\url{https://dbresearch.uni-salzburg.at/teaching/2016ws/dbt/dbt_01-handout-1x1.pdf}, Page 23-27}
@@ -123,7 +116,7 @@ for the input:
     Batch / Bulk Insert & 120 \\
     SQL COPY statement & 8   
   \end{tabular}
-  \end{table}XXX
+  \end{table}
 
   \bigskip
 
