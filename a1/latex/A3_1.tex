@@ -1,6 +1,7 @@
 \documentclass[11pt]{scrartcl}
 
-\usepackage{url,float}
+\usepackage[hyphens]{url}
+\usepackage{float}
 \usepackage{graphicx}
 
 \title{
@@ -118,9 +119,9 @@ for the input:
   \begin{tabular}{l|r}
     Approach & Runtime [sec] \\
     \hline
-    Straightforward & ... \\
-    Approach 1 (NAME) & ... \\
-    Approach 2 (NAME) & ...     
+    Straightforward & 11400 \\
+    Batch / Bulk Insert & 120 \\
+    SQL COPY statement & 8   
   \end{tabular}
   \end{table}XXX
 
@@ -128,14 +129,15 @@ for the input:
 
   \noindent Notes:
   \begin{itemize}
-  \item For the straightforward approach you are allowed to import
-    only a subset of the tuples (e.g., 10000 tuples) and estimate the
-    overall runtime. The timings for all other approaches should be
-    real measurements over the whole dataset.
-  \item Specify the setting of the experiment, i.e., where is the
-    database server (local machine, database server at the
-    department), where is the client (wired/wireless network of the
-    department)?
+  \item The provided ''biber'' database server was used as target for
+  uploading the data, tsv files were stored on the cosy user account home folder,
+  the program was run from a machine at the computer room of the facility.
+  
+  \item For the straightforward approach, only 10000 records were uploaded,
+  we scaled the 38 sec. taken linearly to approximate the time taken for all $\approx 3$ mio records.
+  
+  \item For the batch insert, we chose a batch size of 1000 since experiments showed
+  larger batch sizes do not give further speedup.
 \end{itemize}
 
   \subsection*{Time Spent on this Assignment}
