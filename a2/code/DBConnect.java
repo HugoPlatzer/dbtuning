@@ -77,7 +77,7 @@ public class DBConnect
 			stmt.setInt(1, randomNum(1000000));
 			stmt.setString(2, randomName(15));
 			stmt.setString(3, randomName(25));
-			stmt.setString(4, randomNum(5));
+			stmt.setInt(4, randomNum(5));
 			stmt.addBatch();
 			
 			if (i % batchSize == 0)
