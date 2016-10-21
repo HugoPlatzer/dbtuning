@@ -62,12 +62,16 @@ SQL statements used to create the tables {\tt Employee}, {\tt
 \end{verbatim}
 }
 
+The CONSTRAINTs make Postgres automatically generate an index on the
+unique attribute.
+
 \paragraph{Populating the Tables}
 
-ssnum: Ascending int values from the inserting for-loop\\
+ssnum: Ascending integers starting from 1\\
 name: Random 20 character string with characters a-z, to minimize errors from duplicates\\
 manager: Random letter from A-Z, to have a good chance of duplicates\\
-dept: Random letter from A-J, to have a good chance of duplicates\\
+dept: Random letter from A-Z, A-C are techdepts
+this yields ca. 10\% working in a techdept
 salary: Random integer between 1-100000\\
 numfriends: Random integer between 1-100\\
 course: Random 5 character string with character a-z\\
@@ -106,46 +110,78 @@ SELECT COUNT(*) FROM Employee, Temp WHERE
 Execution plan original query:
 
 \begin{verbatim}
-  execution plan original query...
+ Aggregate  (cost=211475925.33..211475925.34 rows=1 width=0)
+   ->  Seq Scan on employee e1  (cost=0.00..211475842.00 rows=33333 width=0)
+         Filter: ((SubPlan 1) > 1000)
+         SubPlan 1
+           ->  Aggregate  (cost=2114.73..2114.74 rows=1 width=0)
+                 ->  Seq Scan on employee e2  (cost=0.00..2092.00 rows=9091 width=0)
+                       Filter: ((dept)::text = (e1.dept)::text)
 \end{verbatim}
 
-Give an interpretation of the execution plan, i.e., describe how the
-original query is evaluated.
+This works like a nested for loop: For every employee e1 go over all Employees e2
+and filter these where dept matches. Then count the number of Employees e1 where
+the number of matches was $>1000$.
 
 Execution plan rewritten query:
 
 \begin{verbatim}
-  execution plan rewritten query...
+ HashAggregate  (cost=2342.00..2342.11 rows=11 width=2)
+   Group Key: dept
+   ->  Seq Scan on employee  (cost=0.00..1842.00 rows=100000 width=2)
+
+ Aggregate  (cost=6281.68..6281.69 rows=1 width=0)
+   ->  Merge Join  (cost=41.43..5797.93 rows=193500 width=0)
+         Merge Cond: ((employee.dept)::text = (temp.dept)::text)
+         ->  Index Only Scan using dept_index on employee  (cost=0.29..2604.29 rows=100000 width=2)
+         ->  Sort  (cost=41.13..42.10 rows=387 width=32)
+               Sort Key: temp.dept
+               ->  Seq Scan on temp  (cost=0.00..24.50 rows=387 width=32)
+                     Filter: (cnt > 1000)
 \end{verbatim}
 
-Give an interpretation of the execution plan, i.e., describe how the
-rewritten query is evaluated.
+In the first step, for every department the number of employees is counted,
+this (presumably) also uses the index on dept. The result, a small table (11 rows)
+is stored in Temp.
 
-Discuss, how the execution plan changed between the original and the
-rewritten query. In both the interpretation of the query plans and the
-discussion focus on the crucial parts, i.e., the parts of the query
-plans that cause major runtime differences.
+A merge join is then performed checking for each employee whether its dept
+is in the temp table, only considering depts with $>1000$ employees. The number
+of rows returned by the merge join is counted.
 
-\paragraph{Runtime} Discuss, why the rewritten query is (or is not)
-faster than the original query.
+
+\paragraph{Runtime} It becomes obvious that the rewritten query has to
+be a lot faster when you need $n^2$ operations ($n$ is number of employees)
+for the original nested-loop
+approach but only around $kn$ ($k$ is number of departments) for the nested-loop
+approach: create counter for each department, iterate over employees,
+find their departments counter, increment,
+then iterate over employees again and compare department to every department in list
+and if you find a match, check if departments counter is $>1000$,
+if so increment total counter.
 
 
 \begin{table}[H]
   \begin{tabular}{l|r}
     & Runtime [sec] \\
    \hline
-    Original query & \\
-    Rewritten query & \\
+    Original query & 250\\
+    Rewritten query & 0.05\\
   \end{tabular}
 \end{table}
 
 \subsection*{Query 2}
 
+\paragraph{Intent}
+
+Count how many employees are having a salary higher than the average
+salary of all employees in their department.
+
 \paragraph{Original Query}
 
 {\small
 \begin{verbatim}
-  SQL ORIGINAL QUERY
+SELECT COUNT(DISTINCT ssnum) FROM Employee e1 WHERE
+    salary > (SELECT AVG(salary) FROM Employee e2 WHERE e2.dept = e1.dept);
 \end{verbatim}
 }
 
@@ -153,7 +189,11 @@ faster than the original query.
 
 {\small
 \begin{verbatim}
-  SQL REWRITTEN QUERY
+SELECT AVG(salary) AS avsalary, dept INTO Temp
+FROM Employee GROUP BY Employee.dept;
+
+SELECT COUNT(*) FROM Employee, Temp WHERE
+    salary > avsalary and Employee.dept = Temp.dept;
 \end{verbatim}
 }
 
@@ -162,41 +202,58 @@ faster than the original query.
 Execution plan original query:
 
 \begin{verbatim}
-  execution plan original query...
+   ->  Seq Scan on employee e1  (cost=0.00..115314867.00 rows=33333 width=4)
+         Filter: ((salary)::numeric > (SubPlan 1))
+         SubPlan 1
+           ->  Aggregate  (cost=1153.12..1153.13 rows=1 width=4)
+                 ->  Bitmap Heap Scan on employee e2  (cost=174.75..1130.39 rows=9091 width=4)
+                       Recheck Cond: ((dept)::text = (e1.dept)::text)
+                       ->  Bitmap Index Scan on dept_index  (cost=0.00..172.47 rows=9091 width=0)
+                             Index Cond: ((dept)::text = (e1.dept)::text)
 \end{verbatim}
 
-Give an interpretation of the execution plan, i.e., describe how the
-original query is evaluated.
+A nested loop approach: Iterate over all employees e1, iterate over all
+employees e2 and check if in same department as e1, if so, add to avg. salary,
+after inner loop is done, check if e1 salary greater than average, if so increment counter.
 
 Execution plan rewritten query:
 
 \begin{verbatim}
-  execution plan rewritten query...
+ HashAggregate  (cost=2342.00..2342.14 rows=11 width=6)
+   Group Key: dept
+   ->  Seq Scan on employee  (cost=0.00..1842.00 rows=100000 width=6)
+
+ Aggregate  (cost=13553.10..13553.11 rows=1 width=0)
+   ->  Merge Join  (cost=60.81..13194.77 rows=143333 width=0)
+         Merge Cond: ((employee.dept)::text = (temp.dept)::text)
+         Join Filter: ((employee.salary)::numeric > temp.avsalary)
+         ->  Index Scan using dept_index on employee  (cost=0.29..4284.25 rows=100000 width=6)
+         ->  Sort  (cost=60.52..62.67 rows=860 width=64)
+               Sort Key: temp.dept
+               ->  Seq Scan on temp  (cost=0.00..18.60 rows=860 width=64)
 \end{verbatim}
 
-Give an interpretation of the execution plan, i.e., describe how the
-rewritten query is evaluated.
+First phase: Group employees by department (using index),
+compute avg. salary for each department,
+store in temp.
 
-Discuss, how the execution plan changed between the original and the
-rewritten query. In both the interpretation of the query plans and the
-discussion focus on the crucial parts, i.e., the parts of the query
-plans that cause major runtime differences.
+Second phase: Iterate over employees, look up
+their departments avg. salary, increment counter if salary $>$ avg.
 
-\paragraph{Runtime} Discuss, why the rewritten query is (or is not)
-faster than the original query.
+\paragraph{Runtime} Similar to the last query, a nested loop is avoided.
 
 
 \begin{table}[H]
   \begin{tabular}{l|r}
     & Runtime [sec] \\
    \hline
-    Original query & \\
-    Rewritten query & \\
+    Original query & $>300$\\
+    Rewritten query & 0.5\\
   \end{tabular}
 \end{table}
 
 
-  Time in hours per person: {\bf XXX}
+  Time in hours per person: {\bf 2.71828}
 
 \end{document}
 \grid
