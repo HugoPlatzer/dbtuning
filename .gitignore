@@ -1,5 +1,6 @@
 *.class
 *.pdf
 *.aux
+*.out
 *.log
 *.jar

@@ -65,12 +65,11 @@ unique attribute.
 
 \paragraph{Populating the Tables}
 
-ssnum: Ascending int values from the inserting for-loop\\
+ssnum: Ascending integers starting from 1\\
 name: Random 20 character string with characters a-z, to minimize errors from duplicates\\
 manager: Random letter from A-Z, to have a good chance of duplicates\\
-dept: Random letter from A-J for 10\% working in a tech. dept.,
-to have a good chance of duplicates\\
-Letter Z for rest of employees not working in a tech. dept.\\
+dept: Random letter from A-Z, A-C are techdepts
+this yields ca. 10\% working in a techdept
 salary: Random integer between 1-100000\\
 numfriends: Random integer between 1-100\\
 course: Random 5 character string with character a-z\\
@@ -163,7 +162,7 @@ if so increment total counter.
   \begin{tabular}{l|r}
     & Runtime [sec] \\
    \hline
-    Original query & $250$\\
+    Original query & 250\\
     Rewritten query & 0.05\\
   \end{tabular}
 \end{table}
