@@ -43,8 +43,8 @@ public class DBConnect
 		
 		for(int i = 0; i < 100000; i++)
 		{
-			stmt.setInt(1, randomNum(1000000));
-			stmt.setString(2, randomName(15));
+			stmt.setInt(1, i);
+			stmt.setString(2, randomName(20));
 			stmt.setString(3, randomManager());
 			
 			if(random.nextDouble() <= 0.1)
@@ -76,9 +76,9 @@ public class DBConnect
 		
 		for(int i = 0; i < 100000; i++)
 		{
-			stmt.setInt(1, randomNum(1000000));
-			stmt.setString(2, randomName(15));
-			stmt.setString(3, randomName(25));
+			stmt.setInt(1, i);
+			stmt.setString(2, randomName(20));
+			stmt.setString(3, randomName(5));
 			stmt.setInt(4, randomNum(5));
 			stmt.addBatch();
 			
@@ -101,7 +101,7 @@ public class DBConnect
 		{
 			stmt.setString(1, dept(i));
 			stmt.setString(2, randomManager());
-			stmt.setString(3, randomName(25));
+			stmt.setString(3, randomName(3));
 			stmt.addBatch();
 			
 			if (i % batchSize == 0)
