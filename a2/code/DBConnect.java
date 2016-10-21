@@ -53,7 +53,7 @@ public class DBConnect
 			}
 			else
 			{
-				stmt.setString(4, null);
+				stmt.setString(4, "Z");
 			}
 			stmt.setInt(5, randomNum(100000));
 			stmt.setInt(6, randomNum(100));
