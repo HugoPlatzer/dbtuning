@@ -75,11 +75,17 @@ location: Random 3 character string with character a-z\\
 
 \subsection*{Query 1}
 
+\paragraph{Intention}
+
+This query should count the number of employees for which the total
+number of employees in their department exceeds 1000.
+
 \paragraph{Original Query}
 
 {\small
 \begin{verbatim}
-  SQL ORIGINAL QUERY
+SELECT COUNT(*) FROM Employee e1 WHERE
+    (SELECT COUNT(*) FROM Employee e2 WHERE e2.dept = e1.dept) > 1000;
 \end{verbatim}
 }
 
@@ -87,7 +93,9 @@ location: Random 3 character string with character a-z\\
 
 {\small
 \begin{verbatim}
-  SQL REWRITTEN QUERY
+SELECT dept, COUNT(dept) AS cnt INTO Temp FROM Employee GROUP BY dept;
+SELECT COUNT(*) FROM Employee, Temp WHERE
+    Employee.dept = Temp.dept AND Temp.cnt > 1000;
 \end{verbatim}
 }
 
