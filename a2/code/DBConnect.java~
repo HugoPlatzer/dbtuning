@@ -43,15 +43,15 @@ public class DBConnect
 		{
 			stmt.setInt(1, randomNum(1000000));
 			stmt.setString(2, randomName(15));
-			stmt.setString(3, randomName(15));
+			stmt.setString(3, randomManager());
 			
 			if(random.nextDouble() <= 0.1)
 			{
-				stmt.setString(4, randomName(20));
+				stmt.setString(4, dept(random.nextInt(10));
 			}
 			else
 			{
-				stmt.setString(4, "");
+				stmt.setString(4, null);
 			}
 			stmt.setInt(5, randomNum(100000));
 			stmt.setInt(6, randomNum(100));
@@ -97,8 +97,8 @@ public class DBConnect
 		
 		for(int i = 0; i < 10; i++)
 		{
-			stmt.setString(1, randomName(20));
-			stmt.setString(2, randomName(15));
+			stmt.setString(1, dept(i));
+			stmt.setString(2, randomManager());
 			stmt.setString(3, randomName(25));
 			stmt.addBatch();
 			
@@ -129,5 +129,20 @@ public class DBConnect
 		}
 		
 		return sb.toString();
+	}
+	
+	private static String dept(int pos)
+	{
+		String[] depts = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+		
+		return depts[pos];
+	}
+	
+	private static String randomManager()
+	{
+		String[] managers = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+													"N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+													
+		return managers[random.nextInt(managers.length)];
 	}
 }
