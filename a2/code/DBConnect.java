@@ -22,16 +22,16 @@ public class DBConnect
 		String user = "hplatzer";
 		String pwd = "Aicae4paed4e";
 		String url = "jdbc:postgresql://" + host + ":" + port + "/" + database;
-		int batchSize = 10000;
+		int n = 100000;
 
 		try (Connection con = DriverManager.getConnection(url, user, pwd);)
 		{
 		    String query = "DELETE FROM Employee; DELETE FROM Techdept; Delete from Student;";
 		    con.createStatement().executeUpdate(query);
 		
-			insertTechdepts(con, batchSize);
-			insertEmployees(con, batchSize);
-			insertStudents(con, batchSize);
+			insertTechdepts(con);
+			insertEmployees(con, n);
+			insertStudents(con, n);
 		}
 		catch (SQLException e)
 		{
@@ -39,78 +39,55 @@ public class DBConnect
 		}
 	}
 	
-	private static void insertEmployees(Connection con, int batchSize) throws SQLException
+	private static void insertEmployees(Connection con, int n) throws SQLException
 	{
 		String query = "INSERT INTO Employee (ssnum, name, manager, dept, salary, numfriends) values (?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = con.prepareStatement(query);
 		
-		for(int i = 0; i < 100000; i++)
+		for(int i = 0; i < n; i++)
 		{
-			stmt.setInt(1, i);
+			stmt.setInt(1, i + 1);
 			stmt.setString(2, randomName(20));
-			stmt.setString(3, randomManager());
-			
-			if(random.nextDouble() <= 0.1)
-			{
-				stmt.setString(4, dept(random.nextInt(10)));
-			}
-			else
-			{
-				stmt.setString(4, "Z");
-			}
+			stmt.setString(3, "Mgr"+randomUppercaseLetter());
+			stmt.setString(4, randomUppercaseLetter());
 			stmt.setInt(5, randomNum(100000));
 			stmt.setInt(6, randomNum(100));
 			stmt.addBatch();
-			
-			if (i % batchSize == 0)
-			{
-				stmt.executeBatch();
-			}
 		}
 		
 		stmt.executeBatch();
 		stmt.close();
 	}
 	
-	private static void insertStudents(Connection con, int batchSize) throws SQLException
+	private static void insertStudents(Connection con, int n) throws SQLException
 	{
 		String query = "INSERT INTO Student (ssnum, name, course, grade) values (?, ?, ?, ?)";
 		PreparedStatement stmt = con.prepareStatement(query);
 		
-		for(int i = 0; i < 100000; i++)
+		for(int i = 0; i < n; i++)
 		{
-			stmt.setInt(1, i);
+			stmt.setInt(1, i + 1);
 			stmt.setString(2, randomName(20));
 			stmt.setString(3, randomName(5));
 			stmt.setInt(4, randomNum(5));
 			stmt.addBatch();
-			
-			if (i % batchSize == 0)
-			{
-				stmt.executeBatch();
-			}
 		}
 		
 		stmt.executeBatch();
 		stmt.close();
 	}
 	
-	private static void insertTechdepts(Connection con, int batchSize) throws SQLException
+	private static void insertTechdepts(Connection con) throws SQLException
 	{
 		String query = "INSERT INTO Techdept (dept, manager, location) values (?, ?, ?)";
 		PreparedStatement stmt = con.prepareStatement(query);
 		
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 3; i++)
 		{
-			stmt.setString(1, dept(i));
-			stmt.setString(2, randomManager());
+			stmt.setInt(1, i + 1);
+			stmt.setString(2, "Mgr" + randomUppercaseLetter());
 			stmt.setString(3, randomName(3));
 			stmt.addBatch();
-			
-			if (i % batchSize == 0)
-			{
-				stmt.executeBatch();
-			}
 		}
 		
 		stmt.executeBatch();
@@ -136,14 +113,7 @@ public class DBConnect
 		return sb.toString();
 	}
 	
-	private static String dept(int pos)
-	{
-		String[] depts = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
-		
-		return depts[pos];
-	}
-	
-	private static String randomManager()
+	private static String randomUppercaseLetter()
 	{
 		String[] managers = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
 													"N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
