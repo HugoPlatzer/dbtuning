@@ -57,6 +57,8 @@ SQL statements used to create the tables {\tt Employee}, {\tt
     location character varying,
     CONSTRAINT techdept_dept_key UNIQUE (dept)
   )
+
+  The UNIQUE CONSTRAINT in postgres automatically builds a B+ Tree index.
 \end{verbatim}
 }
 
@@ -197,3 +199,4 @@ faster than the original query.
   Time in hours per person: {\bf XXX}
 
 \end{document}
+\grid
