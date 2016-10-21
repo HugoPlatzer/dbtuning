@@ -14,7 +14,7 @@ public class DBConnect
 {
 	private static Random random = new Random();	
 	
-	public static void main(String[] args)
+	public static void main(String[] args) throws SQLException
 	{
 		String host = "biber.cosy.sbg.ac.at";
 		String port = "5432";
@@ -26,7 +26,9 @@ public class DBConnect
 
 		try (Connection con = DriverManager.getConnection(url, user, pwd);)
 		{
-			insert(con, batchSize);
+			insertTechdepts(con, batchSize);
+			insertEmployees(con, batchSize);
+			insertStudents(con, batchSize);
 		}
 		catch (SQLException e)
 		{
@@ -34,7 +36,7 @@ public class DBConnect
 		}
 	}
 	
-	private static void insertEmployees(Connection con, int batchSize)
+	private static void insertEmployees(Connection con, int batchSize) throws SQLException
 	{
 		String query = "INSERT INTO Employee (ssnum, name, manager, dept, salary, numfriends) values (?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = con.prepareStatement(query);
@@ -47,7 +49,7 @@ public class DBConnect
 			
 			if(random.nextDouble() <= 0.1)
 			{
-				stmt.setString(4, dept(random.nextInt(10));
+				stmt.setString(4, dept(random.nextInt(10)));
 			}
 			else
 			{
@@ -67,7 +69,7 @@ public class DBConnect
 		stmt.close();
 	}
 	
-	private static void insertStudents(Connection con, int batchSize)
+	private static void insertStudents(Connection con, int batchSize) throws SQLException
 	{
 		String query = "INSERT INTO Student (ssnum, name, course, grade) values (?, ?, ?, ?)";
 		PreparedStatement stmt = con.prepareStatement(query);
@@ -90,7 +92,7 @@ public class DBConnect
 		stmt.close();
 	}
 	
-	private static void insertTechdepts(Connection con, int batchSize)
+	private static void insertTechdepts(Connection con, int batchSize) throws SQLException
 	{
 		String query = "INSERT INTO Techdept (dept, manager, location) values (?, ?, ?)";
 		PreparedStatement stmt = con.prepareStatement(query);
