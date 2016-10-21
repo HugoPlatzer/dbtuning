@@ -26,6 +26,9 @@ public class DBConnect
 
 		try (Connection con = DriverManager.getConnection(url, user, pwd);)
 		{
+		    String query = "DELETE FROM Employee; DELETE FROM Techdept; Delete from Student;";
+		    con.createStatement().executeUpdate(query);
+		
 			insertTechdepts(con, batchSize);
 			insertEmployees(con, batchSize);
 			insertStudents(con, batchSize);
