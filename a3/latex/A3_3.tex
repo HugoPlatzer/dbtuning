@@ -1,0 +1,140 @@
+\documentclass[11pt]{scrartcl}
+
+\title{
+  \textbf{\large Database Tuning -- Assignment 3}\\
+  Index Tuning
+}
+
+\author{
+ Group Name (e.g. A1, B5, B3)\\
+ \large Lastname1 Firstname1, StudentID1 \\
+ \large Lastname2 Firstname2, StudentID2 \\
+ \large Lastname3 Firstname3, StudentID3 
+}
+
+\begin{document}
+
+\maketitle
+
+\medskip
+
+\noindent\textbf{Database system and version:} {\it e.g., Oracle 12c}
+
+\subsection*{Question 1: Index Data Structures} Which index data structures (e.g., $B^+$-tree
+index) are supported?
+
+\smallskip
+
+Your answer\dots
+
+\subsection*{Question 2: Clustered Indexes} Discuss how the system
+supports clustered indexes, in particular:
+
+\paragraph{2a)} How do you create a clustered index on {\tt ssnum}?
+Show the query.\footnote{Give the queries for creating a hash index
+  \emph{and} a $B^+$-tree index if both of them are supported.}
+
+\smallskip
+
+Your answer\dots
+
+{\small
+\begin{verbatim}
+SQL QUERY ...
+\end{verbatim}
+}
+
+\paragraph{2b)} Are clustered indexes on non-key attributes supported, e.g.,
+on {\tt name}?  Show the query.
+
+\smallskip
+
+Your answer\dots
+
+{\small
+\begin{verbatim}
+SQL QUERY ...
+\end{verbatim}
+}
+
+\paragraph{2c)} Is the clustered index dense or sparse?
+
+
+\smallskip
+
+Your answer\dots
+
+\paragraph{2d)} How does the system deal with overflows in clustered indexes?
+How is the fill factor controlled?
+
+\smallskip
+
+Your answer\dots
+
+\paragraph{2e)} Discuss any further characteristics of the system
+related to clustered indexes that are relevant to a database
+tuner?
+
+\smallskip
+
+Your answer\dots
+
+\subsection*{Question 3: Non-Clustered Indexes}
+
+Discuss how the system supports non-clustered indexes, in
+particular:
+
+\paragraph{3a)} How do you create a non-clustered index on {\tt
+  (dept,salary)}? Show the query.$^1$
+
+\smallskip
+
+Your answer\dots
+
+{\small
+\begin{verbatim}
+SQL QUERY ...
+\end{verbatim}
+}
+
+\paragraph{3b)} Can the system take advantage of covering indexes? What if the
+index covers the query, but the condition is not a prefix of the
+attribute sequence {\tt (dept,salary)}?
+
+
+\smallskip
+
+Your answer\dots
+
+\paragraph{3c)} Discuss any further characteristics of the system related to
+non-clustered indexes that are relevant to a database tuner?
+
+\smallskip
+
+Your answer\dots
+
+\subsection*{Question 4: Key Compression and Page Size} If your system
+supports $B^+$-trees, what kind of key compression (if any) does it
+support?  How large is the default disk page? Can it be changed?
+
+
+\smallskip
+
+Your answer\dots
+
+
+\bigskip
+
+\noindent Time in hours per person: {\bf XXX}
+
+\bigskip
+
+\begin{center}
+  \begin{tabular}{c}
+    \hline
+    {\bf Important:} Reference your information sources!
+    \\\hline
+  \end{tabular}
+\end{center}
+
+\end{document}
