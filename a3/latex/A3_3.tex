@@ -113,7 +113,17 @@ attribute sequence {\tt (dept,salary)}?
 
 \smallskip
 
-Your answer\dots
+Yes it supports covering indexes.\\
+Aggregate  (cost=1862.31..1862.32 rows=1 width=2)\\
+  ->  Index Only Scan using dept_salary_index on employee  (cost=0.29..1862.31 rows=2 width=2)\\
+        Index Cond: (salary = 1000)\\\\
+If the condition is not a prefix, the system uses a bitmap heap scan.\\
+Aggregate  (cost=966.63..966.64 rows=1 width=4)\\
+  ->  Bitmap Heap Scan on employee  (cost=74.39..956.92 rows=3883 width=4)\\
+        Recheck Cond: ((dept)::text = 'A'::text)\\
+        ->  Bitmap Index Scan on dept_salary_index  (cost=0.00..73.42 rows=3883 width=0)\\
+              Index Cond: ((dept)::text = 'A'::text)
+
 
 \paragraph{3c)} Discuss any further characteristics of the system related to
 non-clustered indexes that are relevant to a database tuner?
