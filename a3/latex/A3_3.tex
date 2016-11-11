@@ -1,5 +1,5 @@
 \documentclass[11pt]{scrartcl}
-
+\setlength{\parindent}{0pt}
 \title{
   \textbf{\large Database Tuning -- Assignment 3}\\
   Index Tuning
@@ -18,13 +18,21 @@
 
 \medskip
 
-\noindent\textbf{Database system and version:} {\it e.g., Oracle 12c}
+\noindent\textbf{Database system and version:} {\it e.g., PostgreSQL}
+
+\vspace{1em}
+Since PostgreSQL only supports heap tables, a clustered index in the strict sense
+is not possible. We can however cluster the data using a given index. The data
+gets physically sorted on the disk, clustering however is a one-time operation
+and inserted/deleted data is not automatically clustered, leading to performance
+degradation.\\
+First we need to create an index. After that we can cluster our table using that index.\\
+Tuples that are inserted after this, however are not ordered.
 
 \subsection*{Question 1: Index Data Structures} Which index data structures (e.g., $B^+$-tree
 index) are supported?
 
-\smallskip
-
+\vspace{1em}
 B+-Tree\\
 Hash\\
 GIN (Generalized Inverted Indexes)\\
@@ -39,16 +47,14 @@ supports clustered indexes, in particular:
 Show the query.\footnote{Give the queries for creating a hash index
   \emph{and} a $B^+$-tree index if both of them are supported.}
 
-\smallskip
-Since PostgreSQL is using heap tables, there doesn't exist a clustered index. We can however order the index using the cluster method.\\
-First we need to create an index. After that we can cluster our table using that index.\\
-Tuples that are inserted after this, however are not ordered.
+What if a.
 
 {\small
 \begin{verbatim}
-B+-Tree: CREATE INDEX ssnum_index ON Employee (ssnum);
-Hash: CREATE INDEX ssnum_index ON Employee USING hash (ssnum);
+B+-Tree: alter table employee add primary key (ssnum);
+CLUSTER Employee USING ssnum_pkey;
 
+Hash: CREATE INDEX ssnum_index ON Employee USING hash (ssnum);
 CLUSTER Employee USING ssnum_index;
 \end{verbatim}
 }
