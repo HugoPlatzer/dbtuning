@@ -20,15 +20,6 @@
 
 \noindent\textbf{Database system and version:} {\it e.g., PostgreSQL}
 
-\vspace{1em}
-Since PostgreSQL only supports heap tables, a clustered index in the strict sense
-is not possible. We can however cluster the data using a given index. The data
-gets physically sorted on the disk, clustering however is a one-time operation
-and inserted/deleted data is not automatically clustered, leading to performance
-degradation.\\
-First we need to create an index. After that we can cluster our table using that index.\\
-Tuples that are inserted after this, however are not ordered.
-
 \subsection*{Question 1: Index Data Structures} Which index data structures (e.g., $B^+$-tree
 index) are supported?
 
@@ -47,11 +38,14 @@ supports clustered indexes, in particular:
 Show the query.\footnote{Give the queries for creating a hash index
   \emph{and} a $B^+$-tree index if both of them are supported.}
 
-What if a.
+\vspace{1em}
+When marking columns as primary key, Postgres automatically creates
+a $B^+$-tree index for them; otherwise it could not check the uniqueness
+efficiently.
 
 {\small
 \begin{verbatim}
-B+-Tree: alter table employee add primary key (ssnum);
+B+-Tree: ALTER TABLE Employee ADD PRIMARY KEY (ssnum);
 CLUSTER Employee USING ssnum_pkey;
 
 Hash: CREATE INDEX ssnum_index ON Employee USING hash (ssnum);
@@ -62,29 +56,40 @@ CLUSTER Employee USING ssnum_index;
 \paragraph{2b)} Are clustered indexes on non-key attributes supported, e.g.,
 on {\tt name}?  Show the query.
 
-\smallskip
-
-No. CLUSTER instructs PostgreSQL to cluster the table specified by table\_name based on the index specified by index\_name. The index must already have been defined on table\_name.
+\vspace{1em}
+This works in a similar fashion: You first create a regular index
+on the attribute, then cluster the data by the index.
 
 {\small
 \begin{verbatim}
-SQL QUERY ...
+CREATE INDEX name_index ON Employee (name);
+CLUSTER Employee USING name_index;
 \end{verbatim}
 }
 
 \paragraph{2c)} Is the clustered index dense or sparse?
 
-
-\smallskip
-
-Dense, since newly inserted tuples are not ordered.
+\vspace{1em}
+Since Postgres only supports heap
+tables (unordered tuples on disk), a dense index is required to address
+every tuple.
 
 \paragraph{2d)} How does the system deal with overflows in clustered indexes?
 How is the fill factor controlled?
 
-\smallskip
+\vspace{1em}
+When creating an index, Postgres allows one to specify the fillfactor like so:
 
-Your answer\dots
+{\small
+\begin{verbatim}
+CREATE INDEX name_index ON Employee (name) WITH (fillfactor=70);
+\end{verbatim}
+}
+
+This means the leaf nodes of the $B^+$-tree will only be 70\% full
+when the index is created. This allows new records to be added for some time
+until index pages need to be split. It has the drawback of making the index
+larger than necessary and thus degrading read performance.
 
 \paragraph{2e)} Discuss any further characteristics of the system
 related to clustered indexes that are relevant to a database
@@ -92,7 +97,12 @@ tuner?
 
 \smallskip
 
-Clustering only sorts once. Further inserted tuples are not ordered.
+\vspace{1em}
+Since PostgreSQL only supports heap tables, a clustered index in the strict sense
+is not possible. We can however cluster the data using a given index. The data
+gets physically sorted on the disk, clustering however is a one-time operation
+and inserted/deleted data is not automatically clustered, leading to performance
+degradation.\\
 
 \subsection*{Question 3: Non-Clustered Indexes}
 
