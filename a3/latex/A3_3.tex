@@ -25,7 +25,12 @@ index) are supported?
 
 \smallskip
 
-Your answer\dots
+B+-Tree\\
+Hash\\
+GIN (Generalized Inverted Indexes)\\
+GiST (Generalized Search Tree)\\
+SP-GiST (Space partitioned GiST)\\
+BRIN (Block range indexes)
 
 \subsection*{Question 2: Clustered Indexes} Discuss how the system
 supports clustered indexes, in particular:
@@ -35,12 +40,16 @@ Show the query.\footnote{Give the queries for creating a hash index
   \emph{and} a $B^+$-tree index if both of them are supported.}
 
 \smallskip
-
-Your answer\dots
+Since PostgreSQL is using heap tables, there doesn't exist a clustered index. We can however order the index using the cluster method.\\
+First we need to create an index. After that we can cluster our table using that index.\\
+Tuples that are inserted after this, however are not ordered.
 
 {\small
 \begin{verbatim}
-SQL QUERY ...
+B+-Tree: CREATE INDEX ssnum_index ON Employee (ssnum);
+Hash: CREATE INDEX ssnum_index ON Employee USING hash (ssnum);
+
+CLUSTER Employee USING ssnum_index;
 \end{verbatim}
 }
 
@@ -49,7 +58,7 @@ on {\tt name}?  Show the query.
 
 \smallskip
 
-Your answer\dots
+No. CLUSTER instructs PostgreSQL to cluster the table specified by table_name based on the index specified by index_name. The index must already have been defined on table_name.
 
 {\small
 \begin{verbatim}
@@ -62,7 +71,7 @@ SQL QUERY ...
 
 \smallskip
 
-Your answer\dots
+Dense, since newly inserted tuples are not ordered.
 
 \paragraph{2d)} How does the system deal with overflows in clustered indexes?
 How is the fill factor controlled?
@@ -77,7 +86,7 @@ tuner?
 
 \smallskip
 
-Your answer\dots
+Clustering only sorts once. Further inserted tuples are not ordered.
 
 \subsection*{Question 3: Non-Clustered Indexes}
 
@@ -89,11 +98,11 @@ particular:
 
 \smallskip
 
-Your answer\dots
+Just create an index on (dept,salary), PostgreSQL doesn't have clustered indices.
 
 {\small
 \begin{verbatim}
-SQL QUERY ...
+CREATE INDEX dept_salary_index ON Employee (dept,salary);
 \end{verbatim}
 }
 
