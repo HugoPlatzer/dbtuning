@@ -125,16 +125,21 @@ CREATE INDEX dept_salary_index ON Employee (dept,salary);
 index covers the query, but the condition is not a prefix of the
 attribute sequence {\tt (dept,salary)}?
 
-
-\smallskip
+\vspace{1em}
+Postgres supports covering indexes:
 
 {\small
 \begin{verbatim}
-Yes, it supports covering indexes.
 Aggregate  (cost=1862.31..1862.32 rows=1 width=2)
   ->  Index Only Scan using dept_salary_index on employee  (cost=0.29..1862.31 rows=2 width=2)
         Index Cond: (salary = 1000)
-If the condition is not a prefix, the system uses a bitmap heap scan.
+\end{verbatim}
+}
+
+If the condition is not a prefix, Postgres uses a bitmap heap scan.
+
+{\small
+\begin{verbatim} 
 Aggregate  (cost=966.63..966.64 rows=1 width=4)
   ->  Bitmap Heap Scan on employee  (cost=74.39..956.92 rows=3883 width=4)
         Recheck Cond: ((dept)::text = 'A'::text)
