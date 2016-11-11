@@ -1,4 +1,5 @@
 \documentclass[11pt]{scrartcl}
+\usepackage{url}
 \setlength{\parindent}{0pt}
 \title{
   \textbf{\large Database Tuning -- Assignment 3}\\
@@ -6,10 +7,9 @@
 }
 
 \author{
- Group Name (e.g. A1, B5, B3)\\
- \large Lastname1 Firstname1, StudentID1 \\
- \large Lastname2 Firstname2, StudentID2 \\
- \large Lastname3 Firstname3, StudentID3 
+ Group Name A3\\
+ \large Platzer Hugo, 1421579 \\
+ \large Strohmeier Mario, 1422959
 }
 
 \begin{document}
@@ -18,10 +18,11 @@
 
 \medskip
 
-\noindent\textbf{Database system and version:} {\it e.g., PostgreSQL}
+\noindent\textbf{Database system and version:} {\it PostgreSQL 9.4.9}
 
 \subsection*{Question 1: Index Data Structures} Which index data structures (e.g., $B^+$-tree
 index) are supported?
+\footnote{Postgres documentation on index types \url{https://www.postgresql.org/docs/9.5/static/indexes-types.html}}
 
 \vspace{1em}
 B+-Tree\\
@@ -35,8 +36,8 @@ BRIN (Block range indexes)
 supports clustered indexes, in particular:
 
 \paragraph{2a)} How do you create a clustered index on {\tt ssnum}?
-Show the query.\footnote{Give the queries for creating a hash index
-  \emph{and} a $B^+$-tree index if both of them are supported.}
+Show the query.
+\footnote{\label{pdoc:cluster} Postgres documentation on CLUSTER command \url{https://www.postgresql.org/docs/9.5/static/sql-cluster.html}}
 
 \vspace{1em}
 When marking columns as primary key, Postgres automatically creates
@@ -58,7 +59,7 @@ on {\tt name}?  Show the query.
 
 \vspace{1em}
 This works in a similar fashion: You first create a regular index
-on the attribute, then cluster the data by the index.
+on the attribute, then cluster the data by the index. \textsuperscript{\ref{pdoc:cluster}}
 
 {\small
 \begin{verbatim}
@@ -72,7 +73,7 @@ CLUSTER Employee USING name_index;
 \vspace{1em}
 Since Postgres only supports heap
 tables (unordered tuples on disk), a dense index is required to address
-every tuple.
+every tuple. \footnote{http://stackoverflow.com/questions/19987786/postgresql-indices-are-they-dense-or-sparse}
 
 \paragraph{2d)} How does the system deal with overflows in clustered indexes?
 How is the fill factor controlled?
@@ -90,6 +91,7 @@ This means the leaf nodes of the $B^+$-tree will only be 70\% full
 when the index is created. This allows new records to be added for some time
 until index pages need to be split. It has the drawback of making the index
 larger than necessary and thus degrading read performance.
+\footnote{Postgres documentation on creating indices https://www.postgresql.org/docs/9.3/static/sql-createindex.html}
 
 \paragraph{2e)} Discuss any further characteristics of the system
 related to clustered indexes that are relevant to a database
@@ -102,7 +104,8 @@ Since PostgreSQL only supports heap tables, a clustered index in the strict sens
 is not possible. We can however cluster the data using a given index. The data
 gets physically sorted on the disk, clustering however is a one-time operation
 and inserted/deleted data is not automatically clustered, leading to performance
-degradation.\\
+degradation.
+\footnote{\label{so:cluster}http://stackoverflow.com/questions/27978157/cluster-and-non-cluster-index-in-postgresql}
 
 \subsection*{Question 3: Non-Clustered Indexes}
 
@@ -110,14 +113,18 @@ Discuss how the system supports non-clustered indexes, in
 particular:
 
 \paragraph{3a)} How do you create a non-clustered index on {\tt
-  (dept,salary)}? Show the query.$^1$
+  (dept,salary)}? Show the query.
 
 \vspace{1em}
-Just create an index on (dept,salary), PostgreSQL doesn't have clustered indices.
+Just create an index on (dept,salary), Postgres doesn't have clustered indices.
+\textsuperscript{\ref{so:cluster}}
+
+Postgres does not support multi-column hash indices.
+\footnote{Gives an error trying to create the index.}
 
 {\small
 \begin{verbatim}
-CREATE INDEX dept_salary_index ON Employee (dept,salary);
+B+-Tree: CREATE INDEX dept_salary_index ON Employee (dept,salary);
 \end{verbatim}
 }
 
@@ -127,6 +134,8 @@ attribute sequence {\tt (dept,salary)}?
 
 \vspace{1em}
 Postgres supports covering indexes:
+\footnote{Postgres documentation on index-only scans
+\url{https://wiki.postgresql.org/wiki/Index-only_scans}}
 
 {\small
 \begin{verbatim}
@@ -161,14 +170,19 @@ support?  How large is the default disk page? Can it be changed?
 
 
 \vspace{1em}
-Postgres does not support index compression.
+Postgres does not support index key compression.
+\footnote{Since implementing this was given as homework to students,
+we conclude Postgres does not support the feature.
+\url{http://inst.eecs.berkeley.edu/~cs186/fa06/hw/hw1/}}
+
 The default disk page size is 8 kB. This can be changed when compiling
 Postgres.
-
+\footnote{Postgres documentation on disk page layout 
+https://www.postgresql.org/docs/9.5/static/storage-page-layout.html}
 
 \bigskip
 
-\noindent Time in hours per person: {\bf XXX}
+\noindent Time in hours per person: {\bf 3.5}
 
 \bigskip
 
