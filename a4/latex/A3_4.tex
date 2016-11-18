@@ -46,12 +46,13 @@ SELECT * FROM Publ WHERE pubID = ...
 }
 
 \noindent
-Which conditions did you use?\\
-We created a file of 20000 pubIDs, which we got from the actual data.\\
-This file was then read into Java and executed as Prepared Statements.
+\newcommand{\condA}[1][20000]{
+One query was executed for each of the #1 lexicographically smallest pubIDs,
+in ascending order.
+}
+\condA
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.\\
 Runtime: 64.1s $\Rightarrow$ 0.0032s/q\\
 Throughput: 312q/s
 
@@ -78,12 +79,12 @@ SELECT * FROM Publ WHERE booktitle = ...
 }
 
 \noindent
-Which conditions did you use?\\
-We created a file of 4841 booktitles, which we got from the actual data. These are all distinct booktitles.\\
-This file was then read into Java and executed as Prepared Statements.
+\newcommand{\condB}[1][4841]{
+One query was executed for the lexicographically smallest #1 booktitles in the dataset,
+in ascending order.}
+\condB
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.\\
 Runtime: 20.8s $\Rightarrow$ 0.0043s/q\\
 Throughput: 233q/s
 
@@ -111,12 +112,12 @@ SELECT * FROM Publ WHERE year = ...
 }
 
 \noindent
-Which conditions did you use?\\
-We created a file of 74 years, which we got from the actual data. These are all distinct years.\\
-This file was then read into Java and executed as Prepared Statements.
+\newcommand{\condC}{
+One query was executed for all 74 years in the dataset, in ascending order.
+}
+\condC
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.\\
 Runtime: 7.8s $\Rightarrow$ 0.105s/q\\
 Throughput: 9.5q/s
 
@@ -154,12 +155,9 @@ SELECT * FROM Publ WHERE pubID = ...
 
 \noindent
 Which conditions did you use?\\
-We created a file of 20000 pubIDs, which we got from the actual data.\\
-This file was then read into Java and executed as Prepared Statements.\\
-Further queries used the same setup, using booktitles and years.
+\condA
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.\\
 Runtime: 63.9s $\Rightarrow$ 0.0032s/q\\
 Throughput: 313q/s
 
@@ -187,9 +185,7 @@ SELECT * FROM Publ WHERE booktitle = ...
 }
 
 \noindent
-Which conditions did you use?
-We created a file of 4841 booktitles, which we got from the actual data. These are all distinct booktitles.\\
-This file was then read into Java and executed as Prepared Statements.
+\condB
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
@@ -221,8 +217,7 @@ SELECT * FROM Publ WHERE year = ...
 
 \noindent
 Which conditions did you use?\\
-We created a file of 74 years, which we got from the actual data. These are all distinct years.\\
-This file was then read into Java and executed as Prepared Statements.
+\condC
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
@@ -263,10 +258,7 @@ SELECT * FROM Publ WHERE pubID = ...
 }
 
 \noindent
-Which conditions did you use?\\
-We created a file of 20000 pubIDs, which we got from the actual data.\\
-This file was then read into Java and executed as Prepared Statements.\\
-Further queries used the same setup, using booktitles and years.
+\condA
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
@@ -297,9 +289,7 @@ SELECT * FROM Publ WHERE booktitle = ...
 }
 
 \noindent
-Which conditions did you use?
-We created a file of 4841 booktitles, which we got from the actual data. These are all distinct booktitles.\\
-This file was then read into Java and executed as Prepared Statements.
+\condB
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
@@ -334,9 +324,7 @@ SELECT * FROM Publ WHERE year = ...
 }
 
 \noindent
-Which conditions did you use?\\
-We created a file of 74 years, which we got from the actual data. These are all distinct years.\\
-This file was then read into Java and executed as Prepared Statements.
+\condC
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
@@ -378,9 +366,7 @@ SELECT * FROM Publ WHERE pubID = ...
 
 \noindent
 Which conditions did you use?\\
-We created a file of 500 pubIDs, which we got from the actual data.\\
-This file was then read into Java and executed as Prepared Statements.\\
-Further queries used the same setup, using booktitles and years.
+\condA[500]
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
@@ -412,9 +398,7 @@ SELECT * FROM Publ WHERE booktitle = ...
 }
 
 \noindent
-Which conditions did you use?
-We created a file of 4841 booktitles (300 used), which we got from the actual data. These are all distinct booktitles.\\
-This file was then read into Java and executed as Prepared Statements.
+\condB[300]
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
@@ -446,9 +430,7 @@ SELECT * FROM Publ WHERE year = ...
 }
 
 \noindent
-Which conditions did you use?\\
-We created a file of 74 years, which we got from the actual data. These are all distinct years.\\
-This file was then read into Java and executed as Prepared Statements.
+\condC
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
