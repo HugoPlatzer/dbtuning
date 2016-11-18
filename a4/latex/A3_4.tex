@@ -9,10 +9,9 @@
 }
 
 \author{
- Group Name (e.g. A1, B5, B3)\\
- \large Lastname1 Firstname1, StudentID1 \\
- \large Lastname2 Firstname2, StudentID2 \\
- \large Lastname3 Firstname3, StudentID3 
+ Group Name A3\\
+ \large Platzer Hugo, 1421579 \\
+ \large Strohmeier Mario, 1422959 \\
 }
 
 \begin{document}
@@ -31,7 +30,8 @@
 \section{Experimental Setup}
 
 How do send the queries to the database? How do you measure the
-execution time for a sequence of queries?
+execution time for a sequence of queries?\\
+We send the Queries from a Java program. The time was measured with System.nanoTime() from Java.
 
 \section{Clustered B$^+$-Tree Index}
 
@@ -46,10 +46,14 @@ SELECT * FROM Publ WHERE pubID = ...
 }
 
 \noindent
-Which conditions did you use?
+Which conditions did you use?\\
+We created a file of 20000 pubIDs, which we got from the actual data.\\
+This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.
+Runtime: 64.1s => 0.0032s/q\\
+Throughput: 312q/s
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -75,9 +79,13 @@ SELECT * FROM Publ WHERE booktitle = ...
 
 \noindent
 Which conditions did you use?
+We created a file of 4841 booktitles, which we got from the actual data. These are all distinct booktitles.\\
+This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.
+Show the runtime results and compute the throughput.\\
+Runtime: 20.8s => 0.0043s/q\\
+Throughput: 233q/s
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -106,7 +114,9 @@ SELECT * FROM Publ WHERE year = ...
 Which conditions did you use?
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.
+Show the runtime results and compute the throughput.\\
+Runtime: \\
+Throughput: 
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -133,10 +143,15 @@ SELECT * FROM Publ WHERE pubID = ...
 }
 
 \noindent
-Which conditions did you use?
+Which conditions did you use?\\
+We created a file of 20000 pubIDs, which we got from the actual data.\\
+This file was then read into Java and executed as Prepared Statements.\\
+Further queries used the same setup, using booktitles and years.
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.
+Show the runtime results and compute the throughput.\\
+Runtime: 63.9s => 0.0032s/q\\
+Throughput: 313q/s
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -163,9 +178,13 @@ SELECT * FROM Publ WHERE booktitle = ...
 
 \noindent
 Which conditions did you use?
+We created a file of 4841 booktitles, which we got from the actual data. These are all distinct booktitles.\\
+This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.
+Show the runtime results and compute the throughput.\\
+Runtime: 22.1s => 0.0046s/q\\
+Throughput: 219q/s
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -193,7 +212,9 @@ SELECT * FROM Publ WHERE year = ...
 Which conditions did you use?
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.
+Show the runtime results and compute the throughput.\\
+Runtime: \\
+Throughput: 
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -220,10 +241,15 @@ SELECT * FROM Publ WHERE pubID = ...
 }
 
 \noindent
-Which conditions did you use?
+Which conditions did you use?\\
+We created a file of 20000 pubIDs, which we got from the actual data.\\
+This file was then read into Java and executed as Prepared Statements.\\
+Further queries used the same setup, using booktitles and years.
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.
+Show the runtime results and compute the throughput.\\
+Runtime: 65.8s => 0.0033s/q\\
+Throughput: 304q/s
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -250,9 +276,13 @@ SELECT * FROM Publ WHERE booktitle = ...
 
 \noindent
 Which conditions did you use?
+We created a file of 4841 booktitles, which we got from the actual data. These are all distinct booktitles.\\
+This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.
+Show the runtime results and compute the throughput.\\
+Runtime: 21.6s => 0.0045s/q\\
+Throughput: 224q/s
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -277,7 +307,9 @@ SELECT * FROM Publ WHERE year = ...
 Which conditions did you use?
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.
+Show the runtime results and compute the throughput.\\
+Runtime: \\
+Throughput: 
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -305,10 +337,15 @@ SELECT * FROM Publ WHERE pubID = ...
 }
 
 \noindent
-Which conditions did you use?
+Which conditions did you use?\\
+We created a file of 500 pubIDs, which we got from the actual data.\\
+This file was then read into Java and executed as Prepared Statements.\\
+Further queries used the same setup, using booktitles and years.
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.
+Show the runtime results and compute the throughput.\\
+Runtime: 125.9s => 0.251 s/q\\
+Throughput: 4 q/s
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -336,9 +373,13 @@ SELECT * FROM Publ WHERE booktitle = ...
 
 \noindent
 Which conditions did you use?
+We created a file of 4841 booktitles (300 used), which we got from the actual data. These are all distinct booktitles.\\
+This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.
+Show the runtime results and compute the throughput.\\
+Runtime: 84.3s => 0.281s/q\\
+Throughput: 3.56q/s
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -368,7 +409,10 @@ SELECT * FROM Publ WHERE year = ...
 Which conditions did you use?
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.
+Show the runtime results and compute the throughput.\\
+Runtime: \\
+Throughput: 
+
 
 \smallskip\noindent
 Query plan (for one of the queries):
