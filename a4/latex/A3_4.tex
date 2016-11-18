@@ -55,7 +55,11 @@ Show the runtime results and compute the throughput.
 Query plan (for one of the queries):
 {\small
 \begin{verbatim}
-query plan
+ Index Scan using publ_idx on publ  (cost=0.43..8.45 rows=1 width=112)
+ (actual time=0.026..0.026 rows=0 loops=1)
+   Index Cond: ((pubid)::text = ' books/acm/Kim95'::text)
+ Planning time: 0.153 ms
+ Execution time: 0.050 ms
 \end{verbatim}
 }
 
@@ -79,7 +83,11 @@ Show the runtime results and compute the throughput.
 Query plan (for one of the queries):
 {\small
 \begin{verbatim}
-query plan
+ Index Scan using publ_idx on publ  (cost=0.43..569.73 rows=179 width=112)
+ (actual time=0.040..0.089 rows=97 loops=1)
+   Index Cond: ((booktitle)::text = 'Z User Workshop'::text)
+ Planning time: 0.106 ms
+ Execution time: 0.150 ms
 \end{verbatim}
 }
 
@@ -134,7 +142,11 @@ Show the runtime results and compute the throughput.
 Query plan (for one of the queries):
 {\small
 \begin{verbatim}
-query plan
+ Index Scan using publ_idx on publ  (cost=0.43..8.45 rows=1 width=112)
+ (actual time=0.026..0.026 rows=0 loops=1)
+   Index Cond: ((pubid)::text = ' books/acm/Kim95'::text)
+ Planning time: 0.154 ms
+ Execution time: 0.049 ms
 \end{verbatim}
 }
 
@@ -159,7 +171,10 @@ Show the runtime results and compute the throughput.
 Query plan (for one of the queries):
 {\small
 \begin{verbatim}
-query plan
+ Index Scan using publ_idx on publ  (cost=0.43..569.73 rows=179 width=112) (actual time=0.050..0.119 rows=97 loops=1)
+   Index Cond: ((booktitle)::text = 'Z User Workshop'::text)
+ Planning time: 0.275 ms
+ Execution time: 0.178 ms
 \end{verbatim}
 }
 
@@ -214,7 +229,11 @@ Show the runtime results and compute the throughput.
 Query plan (for one of the queries):
 {\small
 \begin{verbatim}
-query plan
+ Index Scan using publ_idx on publ  (cost=0.00..8.02 rows=1 width=112)
+ (actual time=0.020..0.020 rows=0 loops=1)
+   Index Cond: ((pubid)::text = ' books/acm/Kim95'::text)
+ Planning time: 0.210 ms
+ Execution time: 0.048 ms
 \end{verbatim}
 }
 
@@ -295,7 +314,12 @@ Show the runtime results and compute the throughput.
 Query plan (for one of the queries):
 {\small
 \begin{verbatim}
-query plan
+ Seq Scan on publ  (cost=0.00..37841.18 rows=1 width=112)
+ (actual time=359.876..359.876 rows=0 loops=1)
+   Filter: ((pubid)::text = ' books/acm/Kim95'::text)
+   Rows Removed by Filter: 1233214
+ Planning time: 0.108 ms
+ Execution time: 359.903 ms
 \end{verbatim}
 }
 
@@ -320,7 +344,12 @@ Show the runtime results and compute the throughput.
 Query plan (for one of the queries):
 {\small
 \begin{verbatim}
-query plan
+ Seq Scan on publ  (cost=0.00..37843.18 rows=179 width=112)
+ (actual time=172.752..276.457 rows=97 loops=1)
+   Filter: ((booktitle)::text = 'Z User Workshop'::text)
+   Rows Removed by Filter: 1233117
+ Planning time: 0.143 ms
+ Execution time: 276.524 ms
 \end{verbatim}
 }
 
