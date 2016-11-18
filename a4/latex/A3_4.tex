@@ -485,13 +485,15 @@ Give the throughput of the query types and index types in queries/second.
 
 \medskip
 
-Discuss the runtime results for the different index types and the
-table scan. Are the results expected? Why / why not?\\
-
+The results were mostly as expected.\\
+Indices on point queries have a significant performance improvement over a table scan, since only one tuple is returned.\\
+For the multipoint query using the booktitle, the results were also expected, because only a few tuples are returned by the query. So it is more efficient to use the index.\\
+The multipoint query using the year, however returns a lot of tuples. So the use of a table scan is not that much slower, compared to using the index.\\
+The only result that was not expected is, that the clustering of the index, does not grant a performance improvement.
 
 \bigskip
 
-\noindent Time in hours per person: {\bf 3}
+\noindent Time in hours per person: {\bf 4}
 
 \bigskip
 
