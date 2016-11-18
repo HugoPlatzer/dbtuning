@@ -29,9 +29,34 @@
 
 \section{Experimental Setup}
 
-How do send the queries to the database? How do you measure the
-execution time for a sequence of queries?\\
-We send the Queries from a Java program. The time was measured with System.nanoTime() from Java.
+A list of query parameters was generated using the Postgres shell:
+The distinct values of the relevant attribute in lexicographical order were
+requested with a certain limit on the number of values returned, this was written
+to a text file, for example:
+
+{\small
+\begin{verbatim}
+SELECT DISTINCT pubid FROM publ ORDER BY pubid limit(20000) \g pubid.txt
+\end{verbatim}
+}
+
+
+This file is read by a Java program, which inserts the query parameter
+into a PreparedStatement and executes the queries one by one measuring the total
+time taken from first query to last.
+
+\smallskip
+To prevent previous clustering from affecting performance, before running the
+program the data was clustered on a different, non-correlating attribute:
+
+\begin{itemize}
+\item
+For the pubid query, data was clustered by title (unless a clustered index was used).
+\item
+For the booktitle query, data was clustered by pubid (unless a clustered index was used).
+\item
+For the year query, data was clustered by title (unless a clustered index was used).
+\end{itemize}
 
 \section{Clustered B$^+$-Tree Index}
 
@@ -188,7 +213,6 @@ SELECT * FROM Publ WHERE booktitle = ...
 \condB
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.\\
 Runtime: 22.1s $\Rightarrow$ 0.0046s/q\\
 Throughput: 219q/s\\
 
@@ -220,7 +244,6 @@ Which conditions did you use?\\
 \condC
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.\\
 Runtime: 7.9s $\Rightarrow$ 0.106s/q\\
 Throughput: 9.37q/s\\
 
@@ -261,7 +284,6 @@ SELECT * FROM Publ WHERE pubID = ...
 \condA
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.\\
 Runtime: 65.8s $\Rightarrow$ 0.0033s/q\\
 Throughput: 304q/s\\
 
@@ -292,7 +314,6 @@ SELECT * FROM Publ WHERE booktitle = ...
 \condB
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.\\
 Runtime: 21.6s $\Rightarrow$ 0.0045s/q\\
 Throughput: 224q/s\\
 
@@ -327,7 +348,6 @@ SELECT * FROM Publ WHERE year = ...
 \condC
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.\\
 Runtime: 7s $\Rightarrow$ 0.095s/q\\
 Throughput: 10.6q/s\\
 
@@ -369,7 +389,6 @@ Which conditions did you use?\\
 \condA[500]
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.\\
 Runtime: 125.9s $\Rightarrow$ 0.251s/q\\
 Throughput: 4q/s\\
 
@@ -401,7 +420,6 @@ SELECT * FROM Publ WHERE booktitle = ...
 \condB[300]
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.\\
 Runtime: 84.3s $\Rightarrow$ 0.281s/q\\
 Throughput: 3.56q/s\\
 
@@ -433,7 +451,6 @@ SELECT * FROM Publ WHERE year = ...
 \condC
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.\\
 Runtime: 26.7s $\Rightarrow$ 0.361s/q\\
 Throughput: 2.77q/s\\
 
