@@ -1,0 +1,388 @@
+\documentclass[11pt]{scrartcl}
+
+\usepackage[top=2cm]{geometry}
+%\pagestyle{empty}
+
+\title{
+  \textbf{\large Database Tuning -- Assignment 4}\\
+  Index Tuning
+}
+
+\author{
+ Group Name (e.g. A1, B5, B3)\\
+ \large Lastname1 Firstname1, StudentID1 \\
+ \large Lastname2 Firstname2, StudentID2 \\
+ \large Lastname3 Firstname3, StudentID3 
+}
+
+\begin{document}
+
+\maketitle
+
+\noindent
+{\it Notes:}
+\begin{itemize}\itemsep=0pt
+\item Do not forget to run {\tt ANALYZE tablename} after creating or
+  changing a table.
+\item Use {\tt EXPLAIN ANALYZE} for the query plans that you display in the report.
+\end{itemize}
+
+
+\section{Experimental Setup}
+
+How do send the queries to the database? How do you measure the
+execution time for a sequence of queries?
+
+\section{Clustered B$^+$-Tree Index}
+
+\paragraph{Point Query}
+
+Repeat the following query multiple times with different conditions for {\tt pubID}.
+
+{\small
+\begin{verbatim}
+SELECT * FROM Publ WHERE pubID = ...
+\end{verbatim}
+}
+
+\noindent
+Which conditions did you use?
+
+\smallskip\noindent
+Show the runtime results and compute the throughput.
+
+\smallskip\noindent
+Query plan (for one of the queries):
+{\small
+\begin{verbatim}
+query plan
+\end{verbatim}
+}
+
+\paragraph{Multipoint Query -- Low Selectivity}
+
+Repeat the following query multiple times with different conditions for {\tt booktitle}.
+
+{\small
+\begin{verbatim}
+SELECT * FROM Publ WHERE booktitle = ...
+\end{verbatim}
+}
+
+\noindent
+Which conditions did you use?
+
+\smallskip\noindent
+Show the runtime results and compute the throughput.
+
+\smallskip\noindent
+Query plan (for one of the queries):
+{\small
+\begin{verbatim}
+query plan
+\end{verbatim}
+}
+
+
+\paragraph{Multipoint Query -- High Selectivity}
+
+Repeat the following query multiple times with different conditions for {\tt year}.
+
+{\small
+\begin{verbatim}
+SELECT * FROM Publ WHERE year = ...
+\end{verbatim}
+}
+
+\noindent
+Which conditions did you use?
+
+\smallskip\noindent
+Show the runtime results and compute the throughput.
+
+\smallskip\noindent
+Query plan (for one of the queries):
+{\small
+\begin{verbatim}
+query plan
+\end{verbatim}
+}
+
+\section{Non-Clustered B$^+$-Tree Index}
+
+\noindent \emph{Note:} Make sure the data is not physically ordered by
+the indexed attributes due to the clustering index that you created
+before.
+
+\paragraph{Point Query}
+
+Repeat the following query multiple times with different conditions for {\tt pubID}.
+
+{\small
+\begin{verbatim}
+SELECT * FROM Publ WHERE pubID = ...
+\end{verbatim}
+}
+
+\noindent
+Which conditions did you use?
+
+\smallskip\noindent
+Show the runtime results and compute the throughput.
+
+\smallskip\noindent
+Query plan (for one of the queries):
+{\small
+\begin{verbatim}
+query plan
+\end{verbatim}
+}
+
+
+\paragraph{Multipoint Query -- Low Selectivity}
+
+Repeat the following query multiple times with different conditions for {\tt booktitle}.
+
+{\small
+\begin{verbatim}
+SELECT * FROM Publ WHERE booktitle = ...
+\end{verbatim}
+}
+
+\noindent
+Which conditions did you use?
+
+\smallskip\noindent
+Show the runtime results and compute the throughput.
+
+\smallskip\noindent
+Query plan (for one of the queries):
+{\small
+\begin{verbatim}
+query plan
+\end{verbatim}
+}
+
+
+\paragraph{Multipoint Query -- High Selectivity}
+
+Repeat the following query multiple times with different conditions for {\tt year}.
+
+{\small
+\begin{verbatim}
+SELECT * FROM Publ WHERE year = ...
+\end{verbatim}
+}
+
+\noindent
+Which conditions did you use?
+
+\smallskip\noindent
+Show the runtime results and compute the throughput.
+
+\smallskip\noindent
+Query plan (for one of the queries):
+{\small
+\begin{verbatim}
+query plan
+\end{verbatim}
+}
+
+\section{Non-Clustered Hash Index}
+
+\noindent \emph{Note:} Make sure the data is not physically ordered by
+the indexed attributes due to the clustering index that you created
+before.
+
+\paragraph{Point Query}
+
+Repeat the following query multiple times with different conditions for {\tt pubID}.
+
+{\small
+\begin{verbatim}
+SELECT * FROM Publ WHERE pubID = ...
+\end{verbatim}
+}
+
+\noindent
+Which conditions did you use?
+
+\smallskip\noindent
+Show the runtime results and compute the throughput.
+
+\smallskip\noindent
+Query plan (for one of the queries):
+{\small
+\begin{verbatim}
+query plan
+\end{verbatim}
+}
+
+
+\paragraph{Multipoint Query -- Low Selectivity}
+
+Repeat the following query multiple times with different conditions for {\tt booktitle}.
+
+{\small
+\begin{verbatim}
+SELECT * FROM Publ WHERE booktitle = ...
+\end{verbatim}
+}
+
+\noindent
+Which conditions did you use?
+
+\smallskip\noindent
+Show the runtime results and compute the throughput.
+
+\smallskip\noindent
+Query plan (for one of the queries):
+{\small
+\begin{verbatim}
+query plan
+\end{verbatim}
+}
+
+
+\paragraph{Multipoint Query -- High Selectivity}
+
+Repeat the following query multiple times with different conditions for {\tt year}.
+
+{\small
+\begin{verbatim}
+SELECT * FROM Publ WHERE year = ...
+\end{verbatim}
+}
+
+\noindent
+Which conditions did you use?
+
+\smallskip\noindent
+Show the runtime results and compute the throughput.
+
+\smallskip\noindent
+Query plan (for one of the queries):
+{\small
+\begin{verbatim}
+query plan
+\end{verbatim}
+}
+
+
+\section{Table Scan}
+
+\noindent \emph{Note:} Make sure the data is not physically ordered by
+the indexed attributes due to the clustering index that you created
+before.
+
+\paragraph{Point Query}
+
+Repeat the following query multiple times with different conditions for {\tt pubID}.
+
+{\small
+\begin{verbatim}
+SELECT * FROM Publ WHERE pubID = ...
+\end{verbatim}
+}
+
+\noindent
+Which conditions did you use?
+
+\smallskip\noindent
+Show the runtime results and compute the throughput.
+
+\smallskip\noindent
+Query plan (for one of the queries):
+{\small
+\begin{verbatim}
+query plan
+\end{verbatim}
+}
+
+
+\paragraph{Multipoint Query -- Low Selectivity}
+
+Repeat the following query multiple times with different conditions for {\tt booktitle}.
+
+{\small
+\begin{verbatim}
+SELECT * FROM Publ WHERE booktitle = ...
+\end{verbatim}
+}
+
+\noindent
+Which conditions did you use?
+
+\smallskip\noindent
+Show the runtime results and compute the throughput.
+
+\smallskip\noindent
+Query plan (for one of the queries):
+{\small
+\begin{verbatim}
+query plan
+\end{verbatim}
+}
+
+
+\paragraph{Multipoint Query -- High Selectivity}
+
+Repeat the following query multiple times with different conditions for {\tt year}.
+
+{\small
+\begin{verbatim}
+SELECT * FROM Publ WHERE year = ...
+\end{verbatim}
+}
+
+\noindent
+Which conditions did you use?
+
+\smallskip\noindent
+Show the runtime results and compute the throughput.
+
+\smallskip\noindent
+Query plan (for one of the queries):
+{\small
+\begin{verbatim}
+query plan
+\end{verbatim}
+}
+
+\section{Discussion}
+
+Give the throughput of the query types and index types in queries/second.
+\begin{center}
+  \begin{tabular}{c|c|c|c|c}
+    & clustered & non-clust.\ B$^+$-tree & non-clust.\ hash & table scan \\
+    \hline
+    point ({\tt pubID}) & & & \\
+    \hline
+    multipoint ({\tt booktitle}) & & & \\
+    \hline
+    multipoint  ({\tt year}) & & & \\  
+  \end{tabular}
+\end{center}
+
+\medskip
+
+Discuss the runtime results for the different index types and the
+table scan. Are the results expected? Why / why not?
+
+
+\bigskip
+
+\noindent Time in hours per person: {\bf XXX}
+
+\bigskip
+
+\begin{center}
+  \begin{tabular}{c}
+    \hline
+    {\bf Important:} Reference your information sources!
+    \\\hline
+  \end{tabular}
+\end{center}
+
+\end{document}
+\grid
