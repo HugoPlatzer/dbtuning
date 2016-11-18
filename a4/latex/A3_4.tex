@@ -51,8 +51,8 @@ We created a file of 20000 pubIDs, which we got from the actual data.\\
 This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
-Show the runtime results and compute the throughput.
-Runtime: 64.1s => 0.0032s/q\\
+Show the runtime results and compute the throughput.\\
+Runtime: 64.1s $\Rightarrow$ 0.0032s/q\\
 Throughput: 312q/s
 
 \smallskip\noindent
@@ -74,13 +74,13 @@ SELECT * FROM Publ WHERE booktitle = ...
 }
 
 \noindent
-Which conditions did you use?
+Which conditions did you use?\\
 We created a file of 4841 booktitles, which we got from the actual data. These are all distinct booktitles.\\
 This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
-Runtime: 20.8s => 0.0043s/q\\
+Runtime: 20.8s $\Rightarrow$ 0.0043s/q\\
 Throughput: 233q/s
 
 \smallskip\noindent
@@ -103,12 +103,14 @@ SELECT * FROM Publ WHERE year = ...
 }
 
 \noindent
-Which conditions did you use?
+Which conditions did you use?\\
+We created a file of 74 years, which we got from the actual data. These are all distinct years.\\
+This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
-Runtime: \\
-Throughput: 
+Runtime: 7.8s $\Rightarrow$ 0.105s/q\\
+Throughput: 9.5q/s
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -142,7 +144,7 @@ Further queries used the same setup, using booktitles and years.
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
-Runtime: 63.9s => 0.0032s/q\\
+Runtime: 63.9s $\Rightarrow$ 0.0032s/q\\
 Throughput: 313q/s
 
 \smallskip\noindent
@@ -171,7 +173,7 @@ This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
-Runtime: 22.1s => 0.0046s/q\\
+Runtime: 22.1s $\Rightarrow$ 0.0046s/q\\
 Throughput: 219q/s
 
 \smallskip\noindent
@@ -194,12 +196,14 @@ SELECT * FROM Publ WHERE year = ...
 }
 
 \noindent
-Which conditions did you use?
+Which conditions did you use?\\
+We created a file of 74 years, which we got from the actual data. These are all distinct years.\\
+This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
-Runtime: \\
-Throughput: 
+Runtime: 7.9s $\Rightarrow$ 0.106s/q\\
+Throughput: 9.37q/s
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -233,7 +237,7 @@ Further queries used the same setup, using booktitles and years.
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
-Runtime: 65.8s => 0.0033s/q\\
+Runtime: 65.8s $\Rightarrow$ 0.0033s/q\\
 Throughput: 304q/s
 
 \smallskip\noindent
@@ -262,7 +266,7 @@ This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
-Runtime: 21.6s => 0.0045s/q\\
+Runtime: 21.6s $\Rightarrow$ 0.0045s/q\\
 Throughput: 224q/s
 
 \smallskip\noindent
@@ -285,12 +289,14 @@ SELECT * FROM Publ WHERE year = ...
 }
 
 \noindent
-Which conditions did you use?
+Which conditions did you use?\\
+We created a file of 74 years, which we got from the actual data. These are all distinct years.\\
+This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
-Runtime: \\
-Throughput: 
+Runtime: 7s $\Rightarrow$ 0.095s/q\\
+Throughput: 10.6q/s
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -325,8 +331,8 @@ Further queries used the same setup, using booktitles and years.
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
-Runtime: 125.9s => 0.251 s/q\\
-Throughput: 4 q/s
+Runtime: 125.9s $\Rightarrow$ 0.251s/q\\
+Throughput: 4q/s
 
 \smallskip\noindent
 Query plan (for one of the queries):
@@ -354,7 +360,7 @@ This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
-Runtime: 84.3s => 0.281s/q\\
+Runtime: 84.3s $\Rightarrow$ 0.281s/q\\
 Throughput: 3.56q/s
 
 \smallskip\noindent
@@ -377,12 +383,14 @@ SELECT * FROM Publ WHERE year = ...
 }
 
 \noindent
-Which conditions did you use?
+Which conditions did you use?\\
+We created a file of 74 years, which we got from the actual data. These are all distinct years.\\
+This file was then read into Java and executed as Prepared Statements.
 
 \smallskip\noindent
 Show the runtime results and compute the throughput.\\
-Runtime: \\
-Throughput: 
+Runtime: 26.7s $\Rightarrow$ 0.361s/q\\
+Throughput: 2.77q/s
 
 
 \smallskip\noindent
@@ -416,7 +424,7 @@ table scan. Are the results expected? Why / why not?
 
 \bigskip
 
-\noindent Time in hours per person: {\bf XXX}
+\noindent Time in hours per person: {\bf 3}
 
 \bigskip
 
