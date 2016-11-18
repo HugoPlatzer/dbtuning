@@ -122,7 +122,15 @@ Throughput:
 Query plan (for one of the queries):
 {\small
 \begin{verbatim}
-query plan
+ Bitmap Heap Scan on publ  (cost=46.38..6818.57 rows=2317 width=112)
+ (actual time=0.052..0.057 rows=12 loops=1)
+   Recheck Cond: ((year)::text = '1936'::text)
+   Heap Blocks: exact=1
+   ->  Bitmap Index Scan on publ_idx  (cost=0.00..45.80 rows=2317 width=0)
+   (actual time=0.041..0.041 rows=12 loops=1)
+         Index Cond: ((year)::text = '1936'::text)
+ Planning time: 0.239 ms
+ Execution time: 0.096 ms
 \end{verbatim}
 }
 
@@ -190,7 +198,8 @@ Throughput: 219q/s
 Query plan (for one of the queries):
 {\small
 \begin{verbatim}
- Index Scan using publ_idx on publ  (cost=0.43..569.73 rows=179 width=112) (actual time=0.050..0.119 rows=97 loops=1)
+ Index Scan using publ_idx on publ  (cost=0.43..569.73 rows=179 width=112)
+  (actual time=0.050..0.119 rows=97 loops=1)
    Index Cond: ((booktitle)::text = 'Z User Workshop'::text)
  Planning time: 0.275 ms
  Execution time: 0.178 ms
@@ -220,7 +229,16 @@ Throughput:
 Query plan (for one of the queries):
 {\small
 \begin{verbatim}
-query plan
+ Bitmap Heap Scan on publ  (cost=46.38..6818.52 rows=2317 width=112)
+ (actual time=0.049..0.088 rows=12 loops=1)
+   Recheck Cond: ((year)::text = '1936'::text)
+   Heap Blocks: exact=7
+   ->  Bitmap Index Scan on publ_idx  (cost=0.00..45.80 rows=2317 width=0)
+   (actual time=0.038..0.038 rows=12 loops=1)
+         Index Cond: ((year)::text = '1936'::text)
+ Planning time: 0.255 ms
+ Execution time: 0.123 ms
+
 \end{verbatim}
 }
 
@@ -288,7 +306,15 @@ Throughput: 224q/s
 Query plan (for one of the queries):
 {\small
 \begin{verbatim}
-query plan
+ Bitmap Heap Scan on publ  (cost=5.39..675.65 rows=179 width=112)
+ (actual time=0.043..0.128 rows=97 loops=1)
+   Recheck Cond: ((booktitle)::text = 'Z User Workshop'::text)
+   Heap Blocks: exact=6
+   ->  Bitmap Index Scan on publ_idx  (cost=0.00..5.34 rows=179 width=0)
+   (actual time=0.025..0.025 rows=97 loops=1)
+         Index Cond: ((booktitle)::text = 'Z User Workshop'::text)
+ Planning time: 0.249 ms
+ Execution time: 0.197 ms
 \end{verbatim}
 }
 
@@ -315,7 +341,15 @@ Throughput:
 Query plan (for one of the queries):
 {\small
 \begin{verbatim}
-query plan
+ Bitmap Heap Scan on publ  (cost=73.96..6846.09 rows=2317 width=112)
+ (actual time=0.034..0.076 rows=12 loops=1)
+   Recheck Cond: ((year)::text = '1936'::text)
+   Heap Blocks: exact=7
+   ->  Bitmap Index Scan on publ_idx  (cost=0.00..73.38 rows=2317 width=0)
+   (actual time=0.016..0.016 rows=12 loops=1)
+         Index Cond: ((year)::text = '1936'::text)
+ Planning time: 0.200 ms
+ Execution time: 0.113 ms
 \end{verbatim}
 }
 
@@ -418,7 +452,12 @@ Throughput:
 Query plan (for one of the queries):
 {\small
 \begin{verbatim}
-query plan
+ Seq Scan on publ  (cost=0.00..37841.18 rows=2317 width=112)
+ (actual time=75.715..299.065 rows=12 loops=1)
+   Filter: ((year)::text = '1936'::text)
+   Rows Removed by Filter: 1233202
+ Planning time: 0.068 ms
+ Execution time: 299.103 ms
 \end{verbatim}
 }
 
