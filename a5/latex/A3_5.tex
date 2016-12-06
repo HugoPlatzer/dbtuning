@@ -155,8 +155,20 @@ Nested Loop  (cost=0.43..95636.69 rows=412 width=67)
 }
 
 \paragraph{Discussion}
-Discuss here your observations. Are the response times expected? Why / why
-not? 
+An index on Publ.pubid gives a big speedup for Q2, since it allows
+scanning Auth for the ca. 400 pubids with the correct author,
+then looking up the extra data for the pubid using the index on Publ.pubid.
+This way, all blocks of Auth need to be accessed once, plus a small fraction
+of the blocks in Publ. When there is no index on Publ.pubid, for every
+matching pubid, all of publ needs to be scanned for this pubid, so publ
+needs to be scanned ca. 400 times.
+
+For Q1, an index on Auth.pubid is somewhat better than one on Publ.pubid,
+since Auth has about 3 times as many tuples. Publ can then be scanned in the
+outer loop, the index on Auth queried in the inner. This is faster than the
+other order because in the outer loop the cost grows linearly (number of iterations)
+and in the inner logarithmically (index access cost).
+
 
 \section{Sort-Merge Join}
 
