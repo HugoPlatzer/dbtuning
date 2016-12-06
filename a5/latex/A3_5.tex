@@ -1,0 +1,163 @@
+\documentclass[11pt]{scrartcl}
+
+\usepackage[top=2cm]{geometry}
+%\pagestyle{empty}
+
+\title{
+  \textbf{\large Database Tuning -- Assignment 5}\\
+  Join Tuning
+}
+
+\author{
+ Group Name (e.g. A1, B5, B3)\\
+ \large Lastname1 Firstname1, StudentID1 \\
+ \large Lastname2 Firstname2, StudentID2 \\
+ \large Lastname3 Firstname3, StudentID3 
+}
+
+\begin{document}
+
+\maketitle
+
+\section{Join Strategies Proposed by System}
+
+\paragraph{Response times}
+
+\begin{flushleft}
+\begin{tabular}{l|l|l}
+  Indexes & Join Strategy Q1 & Join Strategy Q2\\
+  \hline
+  no index & ... & ...  \\
+  unique non-clustering on {\tt Publ.pubID} & ...  & ... \\
+  clustering on {\tt Publ.pubID} and {\tt Auth.pubID} & ... & ... \\
+\end{tabular}
+\end{flushleft}
+
+\paragraph{Discussion}
+Discuss here your observations. Is the choice of the strategy
+expected? How does the system come to this choice?
+
+\section{Nested Loop Join}
+
+\paragraph{Response times}
+
+\begin{flushleft}
+\begin{tabular}{l|r|r}
+  Indexes & Response time Q1 [ms] & Response time Q2 [ms] \\
+  \hline
+  index on {\tt Publ.pubID} & ... & ...  \\
+  index on {\tt Auth.pubID} & ... & ... \\
+  index on {\tt Publ.pubID} and {\tt Auth.pubID} & ...& ... \\
+\end{tabular}
+\end{flushleft}
+
+\paragraph{Query plans}\mbox{}\\ 
+
+\noindent Index on {\tt Publ.pubID} (Q1/Q2):
+{\small
+\begin{verbatim}
+query plans (index on Publ.pubID)
+\end{verbatim}
+}
+
+\noindent Index on {\tt Auth.pubID} (Q1/Q2):
+{\small
+\begin{verbatim}
+query plans (index on Auth.pubID)
+\end{verbatim}
+}
+
+\noindent Index on {\tt Auth.pubID} and {\tt Auth.pubID} (Q1/Q2):
+{\small
+\begin{verbatim}
+query plans (indexes on Publ.pubID and Auth.pubID)
+\end{verbatim}
+}
+
+\paragraph{Discussion}
+Discuss here your observations. Are the response times expected? Why / why
+not? 
+
+\section{Sort-Merge Join}
+
+\paragraph{Response times}
+
+\begin{flushleft}
+\begin{tabular}{l|r|r}
+  Indexes & Response time Q1 [ms] & Response time Q2 [ms] \\
+  \hline
+  no index & ... & ... \\
+  two non-clustering indexes & ... & ... \\
+  two clustering indexes & ... & ...  \\
+\end{tabular}
+\end{flushleft}
+
+\paragraph{Query plans}\mbox{}\\ 
+
+\noindent No index (Q1/Q2):
+{\small
+\begin{verbatim}
+query plans (no index)
+\end{verbatim}
+}
+
+\noindent Two non-clustering indexes (Q1/Q2):
+{\small
+\begin{verbatim}
+query plans (two non-clustering indexes)
+\end{verbatim}
+}
+
+\noindent Two clustering indexes  (Q1/Q2):
+{\small
+\begin{verbatim}
+query plans (two clustering indexes)
+\end{verbatim}
+}
+
+\paragraph{Discussion}
+Discuss here your observations. Are the response times expected? Why
+/ why not? 
+
+\section{Hash Join}
+
+\paragraph{Response times}
+
+\begin{flushleft}
+\begin{tabular}{l|r|r}
+  Indexes & Response time Q1 [ms] & Response time [ms] Q2 \\
+  \hline
+  no index & ... & ... \\
+\end{tabular}
+\end{flushleft}
+
+\paragraph{Query plans}\mbox{}\\ 
+
+\noindent No Index (Q1/Q2):
+{\small
+\begin{verbatim}
+query plans (no index)
+\end{verbatim}
+}
+
+\paragraph{Discussion}
+
+What do you think about the response time of the hash index vs.\ the
+response times of sort-merge and index nested loop join for each of
+the queries? Explain.
+
+\bigskip
+
+\noindent Time in hours per person: {\bf XXX}
+
+\bigskip
+
+\begin{center}
+  \begin{tabular}{c}
+    \hline
+    {\bf Important:} Reference your information sources!
+    \\\hline
+  \end{tabular}
+\end{center}
+
+\end{document}
