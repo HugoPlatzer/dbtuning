@@ -52,9 +52,9 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
 OUTPUT A3_5.pdf
 INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
 INPUT A3_5.aux
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
