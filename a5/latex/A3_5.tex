@@ -9,10 +9,9 @@
 }
 
 \author{
- Group Name (e.g. A1, B5, B3)\\
- \large Lastname1 Firstname1, StudentID1 \\
- \large Lastname2 Firstname2, StudentID2 \\
- \large Lastname3 Firstname3, StudentID3 
+ Group Name A3\\
+ \large Platzer Hugo, StudentID1 \\
+ \large Strohmeier Mario, 1422959
 }
 
 \begin{document}
@@ -27,7 +26,7 @@
 \begin{tabular}{l|l|l}
   Indexes & Join Strategy Q1 & Join Strategy Q2\\
   \hline
-  no index & ... & ...  \\
+  no index & Hash Join & Hash Join  \\
   unique non-clustering on {\tt Publ.pubID} & ...  & ... \\
   clustering on {\tt Publ.pubID} and {\tt Auth.pubID} & ... & ... \\
 \end{tabular}
@@ -86,7 +85,7 @@ not?
 \begin{tabular}{l|r|r}
   Indexes & Response time Q1 [ms] & Response time Q2 [ms] \\
   \hline
-  no index & ... & ... \\
+  no index & 121287.21 & 27985.16 \\
   two non-clustering indexes & ... & ... \\
   two clustering indexes & ... & ...  \\
 \end{tabular}
@@ -97,7 +96,49 @@ not?
 \noindent No index (Q1/Q2):
 {\small
 \begin{verbatim}
-query plans (no index)
+Q1:
+Merge Join  (cost=846625.43..906942.51 rows=3095201 width=82) (actual time=89743.785..120099.323 rows=3095201 loops=1)
+   Merge Cond: ((publ.pubid)::text = (auth.pubid)::text)
+   ->  Sort  (cost=285913.35..288996.38 rows=1233214 width=89) (actual time=23248.235..26457.879 rows=1233208 loops=1)
+         Sort Key: publ.pubid
+         Sort Method: external meMerge Join  (cost=351402.53..357553.95 rows=24 width=67) (actual time=24166.614..27962.238 rows=183 loops=1)
+   Merge Cond: ((publ.pubid)::text = (auth.pubid)::text)
+   ->  Sort  (cost=285913.35..288996.38 rows=1233214 width=89) (actual time=23291.779..26285.255 rows=1229958 loops=1)
+         Sort Key: publ.pubid
+         Sort Method: external merge  Disk: 121400kB
+         ->  Seq Scan on publ  (cost=0.00..34694.14 rows=1233214 width=89) (actual time=0.011..857.711 rows=1233214 loops=1)
+   ->  Sort  (cost=65488.56..65488.62 rows=24 width=23) (actual time=526.541..526.632 rows=183 loops=1)
+         Sort Key: auth.pubid
+         Sort Method: quicksort  Memory: 39kB
+         ->  Seq Scan on auth  (cost=0.00..65488.01 rows=24 width=23) (actual time=43.402..525.537 rows=183 loops=1)
+               Filter: ((name)::text = 'Divesh Srivastava'::text)
+               Rows Removed by Filter: 3095018
+ Planning time: 0.347 ms
+ Execution time: 27985.160 msrge  Disk: 121400kB
+         ->  Seq Scan on publ  (cost=0.00..34694.14 rows=1233214 width=89) (actual time=0.006..872.339 rows=1233214 loops=1)
+   ->  Materialize  (cost=560711.47..576187.47 rows=3095201 width=38) (actual time=66495.525..78988.422 rows=3095201 loops=1)
+         ->  Sort  (cost=560711.47..568449.47 rows=3095201 width=38) (actual time=66495.518..76637.072 rows=3095201 loops=1)
+               Sort Key: auth.pubid
+               Sort Method: external merge  Disk: 148096kB
+               ->  Seq Scan on auth  (cost=0.00..57750.01 rows=3095201 width=38) (actual time=0.050..1802.142 rows=3095201 loops=1)
+ Planning time: 0.342 ms
+ Execution time: 121287.210 ms
+
+Q2:
+Merge Join  (cost=351402.53..357553.95 rows=24 width=67) (actual time=24166.614..27962.238 rows=183 loops=1)
+   Merge Cond: ((publ.pubid)::text = (auth.pubid)::text)
+   ->  Sort  (cost=285913.35..288996.38 rows=1233214 width=89) (actual time=23291.779..26285.255 rows=1229958 loops=1)
+         Sort Key: publ.pubid
+         Sort Method: external merge  Disk: 121400kB
+         ->  Seq Scan on publ  (cost=0.00..34694.14 rows=1233214 width=89) (actual time=0.011..857.711 rows=1233214 loops=1)
+   ->  Sort  (cost=65488.56..65488.62 rows=24 width=23) (actual time=526.541..526.632 rows=183 loops=1)
+         Sort Key: auth.pubid
+         Sort Method: quicksort  Memory: 39kB
+         ->  Seq Scan on auth  (cost=0.00..65488.01 rows=24 width=23) (actual time=43.402..525.537 rows=183 loops=1)
+               Filter: ((name)::text = 'Divesh Srivastava'::text)
+               Rows Removed by Filter: 3095018
+ Planning time: 0.347 ms
+ Execution time: 27985.160 ms
 \end{verbatim}
 }
 
@@ -127,7 +168,7 @@ Discuss here your observations. Are the response times expected? Why
 \begin{tabular}{l|r|r}
   Indexes & Response time Q1 [ms] & Response time [ms] Q2 \\
   \hline
-  no index & ... & ... \\
+  no index & 9417.998 & 1686.848 \\
 \end{tabular}
 \end{flushleft}
 
@@ -136,7 +177,33 @@ Discuss here your observations. Are the response times expected? Why
 \noindent No Index (Q1/Q2):
 {\small
 \begin{verbatim}
-query plans (no index)
+Q1:
+Merge Join  (cost=351402.53..357553.95 rows=24 width=67) (actual time=24166.614..27962.238 rows=183 loops=1)
+   Merge Cond: ((publ.pubid)::text = (auth.pubid)::text)
+   ->  Sort  (cost=285913.35..288996.38 rows=1233214 width=89) (actual time=23291.779..26285.255 rows=1229958 loops=1)
+         Sort Key: publ.pubid
+         Sort Method: external merge  Disk: 121400kB
+         ->  Seq Scan on publ  (cost=0.00..34694.14 rows=1233214 width=89) (actual time=0.011..857.711 rows=1233214 loops=1)
+   ->  Sort  (cost=65488.56..65488.62 rows=24 width=23) (actual time=526.541..526.632 rows=183 loops=1)
+         Sort Key: auth.pubid
+         Sort Method: quicksort  Memory: 39kB
+         ->  Seq Scan on auth  (cost=0.00..65488.01 rows=24 width=23) (actual time=43.402..525.537 rows=183 loops=1)
+               Filter: ((name)::text = 'Divesh Srivastava'::text)
+               Rows Removed by Filter: 3095018
+ Planning time: 0.347 ms
+ Execution time: 27985.160 ms
+
+Q2:
+Hash Join  (cost=65488.31..140262.15 rows=24 width=67) (actual time=629.617..1686.721 rows=183 loops=1)
+   Hash Cond: ((publ.pubid)::text = (auth.pubid)::text)
+   ->  Seq Scan on publ  (cost=0.00..34694.14 rows=1233214 width=89) (actual time=0.009..587.001 rows=1233214 loops=1)
+   ->  Hash  (cost=65488.01..65488.01 rows=24 width=23) (actual time=539.756..539.756 rows=183 loops=1)
+         Buckets: 1024  Batches: 1  Memory Usage: 11kB
+         ->  Seq Scan on auth  (cost=0.00..65488.01 rows=24 width=23) (actual time=44.442..539.497 rows=183 loops=1)
+               Filter: ((name)::text = 'Divesh Srivastava'::text)
+               Rows Removed by Filter: 3095018
+ Planning time: 0.111 ms
+ Execution time: 1686.848 ms
 \end{verbatim}
 }
 
