@@ -19,9 +19,15 @@
 \maketitle
 
 \section{Description of Setup}
-All queries were run from the University network.
+All queries were run from the computer room of the facility on the 'biber' server.
 
-We deleted all tuples and reinserted them when executing a query that didn't need clustering. This was only done after a query that did need clustering. 
+Data was inserted into the Postgres database using the \textbackslash copy command from the psql prompt as in
+Assignment 1.
+
+Time was measured using the Postgres "\textbackslash timing on" command
+
+We deleted all tuples and reinserted them when executing a query that should be run
+without clustering.
 
 \section{Join Strategies Proposed by System}
 
