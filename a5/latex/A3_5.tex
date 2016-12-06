@@ -10,7 +10,7 @@
 
 \author{
  Group Name A3\\
- \large Platzer Hugo, StudentID1 \\
+ \large Platzer Hugo, 1421579 \\
  \large Strohmeier Mario, 1422959
 }
 
@@ -20,21 +20,35 @@
 
 \section{Join Strategies Proposed by System}
 
-\paragraph{Response times}
+\paragraph{Join strategies}
 
 \begin{flushleft}
 \begin{tabular}{l|l|l}
   Indexes & Join Strategy Q1 & Join Strategy Q2\\
   \hline
   no index & Hash Join & Hash Join  \\
-  unique non-clustering on {\tt Publ.pubID} & ...  & ... \\
-  clustering on {\tt Publ.pubID} and {\tt Auth.pubID} & ... & ... \\
+  unique non-clustering on {\tt Publ.pubID} & Hash Join  & Nested Loop Join \\
+  clustering on {\tt Publ.pubID} and {\tt Auth.pubID} & Hash Join & Nested Loop Join \\
 \end{tabular}
 \end{flushleft}
 
 \paragraph{Discussion}
-Discuss here your observations. Is the choice of the strategy
-expected? How does the system come to this choice?
+It is not surprising that Hash Join is chosen when there are no indices: Nested Loop Join
+is extremely slow when there are no indices (needs to do sequential scan), Merge Join would
+require sorting both relations, which we assume to be slower than creating a hashtable on pubid
+for the smaller relation (publ). This is supported by looking at the clustering(sorting) times
+(ca. 80s for auth and 25s for publ), much longer than the join queries' execution time.
+
+When an index exists on the join attribute, an index nested loop join becomes possible, making
+it more competitive with the hash and merge joins. For Q1, for every tuple in auth, a scan on
+the publ.pubid index needs to be made; since a hashtable allows faster (constant vs logarithmic) scanning,
+it pays off to create such a hashtable before the join.
+
+For Q2, most tuples in auth don't need to be considered (wrong author name), this means very few
+scans on the index on publ.pubid, so creating a hashtable does not pay off and an index nested loop
+join is faster.
+
+When also having an index on auth.pubid, a merge join becomes possible.
 
 \section{Nested Loop Join}
 
