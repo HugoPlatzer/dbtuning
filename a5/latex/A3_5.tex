@@ -53,8 +53,9 @@ For Q2, most tuples in auth don't need to be considered (wrong author name), thi
 scans on the index on publ.pubid, so creating a hashtable does not pay off and an index nested loop
 join is faster.
 
-When also having an index on auth.pubid, a merge join becomes possible.
-
+When also having an index on auth.pubid, a merge join becomes viable. Postgres however does not
+remember whether or not the data is in the correct sort order (clustered), giving merge join a risk
+of high cost.
 \section{Nested Loop Join}
 
 \paragraph{Response times}
