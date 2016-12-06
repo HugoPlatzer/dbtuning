@@ -190,7 +190,7 @@ and in the inner logarithmically (index access cost).
   Indexes & Response time Q1 [ms] & Response time Q2 [ms] \\
   \hline
   no index & 121287.21 & 27985.16 \\
-  two non-clustering indexes & 19720.145 & 2848.947 \\
+  two non-clustering indexes & 30889.430 & 2848.947 \\
   two clustering indexes & 18913.409 & 2506.367  \\
 \end{tabular}
 \end{flushleft}
@@ -267,15 +267,12 @@ Merge Join  (cost=351402.53..357553.95 rows=24 width=67)
 {\small
 \begin{verbatim}
 Q1:
-Merge Join  (cost=0.86..326707.47 rows=3087776 width=82)
-(actual time=0.023..18526.669 rows=3095201 loops=1)
+Merge Join  (cost=0.86..263662.50 rows=3095201 width=82) (actual time=0.021..29647.748 rows=3095201 loops=1)
    Merge Cond: ((publ.pubid)::text = (auth.pubid)::text)
-   ->  Index Scan using publ_pubid_idx on publ  (cost=0.43..101912.41 rows=1233214 width=89)
-       (actual time=0.006..1126.112 rows=1233208 loops=1)
-   ->  Index Scan using auth_pubid_idx on auth  (cost=0.43..183558.29 rows=3087776 width=38)
-       (actual time=0.004..2378.375 rows=3095201 loops=1)
- Planning time: 0.561 ms
- Execution time: 19720.145 ms
+   ->  Index Scan using publ_pubid_idx on publ  (cost=0.43..73268.61 rows=1233214 width=89) (actual time=0.005..1058.483 rows=1233208 loops=1)
+   ->  Index Scan using auth_pubid_idx on auth  (cost=0.43..148799.09 rows=3095201 width=38) (actual time=0.004..12859.194 rows=3095201 loops=1)
+ Planning time: 0.679 ms
+ Execution time: 30889.430 ms
 
 Q2:
 Merge Join  (cost=92222.52..197223.72 rows=412 width=67)
@@ -330,8 +327,9 @@ Merge Join  (cost=65518.38..141893.74 rows=413 width=67)
 }
 
 \paragraph{Discussion}
-Discuss here your observations. Are the response times expected? Why
-/ why not? 
+Without an index it was clear, that it takes a while, since an external merge sort is needed. This takes a lot of read and write time.
+The difference between the non-clustering indices and clustering indices wasn't so clear. We thought the clustering indices would have a bigger improvement, since they are already sorted. When looking at the execution plans, we saw that both Q1 queries are the same and don't use a sort at all. This explains the small difference. Because the tuples are sorted, we need a few less block accesses, and therefore the clustering is a little faster.
+We think for Q2 the same explanation is true, since the execution plan is also the same.
 
 \section{Hash Join}
 
