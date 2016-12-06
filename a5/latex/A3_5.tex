@@ -323,7 +323,7 @@ Discuss here your observations. Are the response times expected? Why
 \begin{tabular}{l|r|r}
   Indexes & Response time Q1 [ms] & Response time [ms] Q2 \\
   \hline
-  no index & 9417.998 & 1686.848 \\
+  no index & 9473.583 & 1686.848 \\
 \end{tabular}
 \end{flushleft}
 
@@ -333,25 +333,18 @@ Discuss here your observations. Are the response times expected? Why
 {\small
 \begin{verbatim}
 Q1:
-Merge Join  (cost=351402.53..357553.95 rows=24 width=67)
-(actual time=24166.614..27962.238 rows=183 loops=1)
-   Merge Cond: ((publ.pubid)::text = (auth.pubid)::text)
-   ->  Sort  (cost=285913.35..288996.38 rows=1233214 width=89)
-       (actual time=23291.779..26285.255 rows=1229958 loops=1)
-         Sort Key: publ.pubid
-         Sort Method: external merge  Disk: 121400kB
-         ->  Seq Scan on publ  (cost=0.00..34694.14 rows=1233214 width=89)
-             (actual time=0.011..857.711 rows=1233214 loops=1)
-   ->  Sort  (cost=65488.56..65488.62 rows=24 width=23)
-       (actual time=526.541..526.632 rows=183 loops=1)
-         Sort Key: auth.pubid
-         Sort Method: quicksort  Memory: 39kB
-         ->  Seq Scan on auth  (cost=0.00..65488.01 rows=24 width=23)
-             (actual time=43.402..525.537 rows=183 loops=1)
-               Filter: ((name)::text = 'Divesh Srivastava'::text)
-               Rows Removed by Filter: 3095018
- Planning time: 0.347 ms
- Execution time: 27985.160 ms
+Hash Join  (cost=69713.26..257884.36 rows=3215760 width=82)
+(actual time=1992.181..8310.008 rows=3095201 loops=1)
+   Hash Cond: ((auth.pubid)::text = (publ.pubid)::text)
+   ->  Seq Scan on auth  (cost=0.00..58955.60 rows=3215760 width=38)
+       (actual time=0.019..1697.798 rows=3095201 loops=1)
+   ->  Hash  (cost=35108.34..35108.34 rows=1274634 width=89)
+       (actual time=1990.989..1990.989 rows=1233214 loops=1)
+         Buckets: 4096  Batches: 64  Memory Usage: 2344kB
+         ->  Seq Scan on publ  (cost=0.00..35108.34 rows=1274634 width=89)
+             (actual time=0.059..951.548 rows=1233214 loops=1)
+ Planning time: 0.652 ms
+ Execution time: 9473.583 ms
 
 Q2:
 Hash Join  (cost=65488.31..140262.15 rows=24 width=67)
