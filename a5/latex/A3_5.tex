@@ -384,9 +384,15 @@ Hash Join  (cost=65488.31..140262.15 rows=24 width=67)
 
 \paragraph{Discussion}
 
-What do you think about the response time of the hash index vs.\ the
-response times of sort-merge and index nested loop join for each of
-the queries? Explain.
+What surprised us the most is the poor performance of the merge join,
+being slower than hash join no matter what index / clustering was used.
+This might be because the hashtable in our case can be kept entirely in RAM,
+allowing faster access even compared to the clustered B+-tree.
+
+Index-nested loop join can be ideal if only a small fraction of the tuples
+in both relations satisfy the join condition, as is the case for Q2.
+If a large fraction of tuples satisfy the join condition, the extra cost
+of a hash join is faster.
 
 \bigskip
 
