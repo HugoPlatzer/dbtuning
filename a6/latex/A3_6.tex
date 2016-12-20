@@ -9,24 +9,32 @@
 }
 
 \author{
- Group Name (e.g. A1, B5, B3)\\
- \large Lastname1 Firstname1, StudentID1 \\
- \large Lastname2 Firstname2, StudentID2 \\
- \large Lastname3 Firstname3, StudentID3 
+ Group Name A3\\
+ \large Platzer Hugo, 1421579 \\
+ \large Strohmeier Mario, 1422959
 }
 
 \begin{document}
 
 \maketitle
 
-\noindent
-{\it Notes:}
+\section{Description of Setup}
+All queries were run from the computer room of the facility on the 'biber' server.
 
-\begin{itemize}
-\item You will need to run transactions concurrently using threads in
-  Java. See\\ \url{http://dbresearch.uni-salzburg.at/teaching/2016ws/dbt/account.zip}
-  for an example.
-\end{itemize}
+Before each run, the Accounts (account, balance) table is deleted and refilled
+by a separate program with the appropriate values.
+The ExecutorService class is used to run Transaction threads in parallel, it 
+also allows to set a limit for maximum concurrent threads.
+
+Every Transaction thread first creates its own Connection, disables auto-commit (this allows
+to build a transaction that consists of multiple statements / queries
+, sets the isolation level,
+then tries to execute all the statements in the transaction and commit. If this fails, i.e. a SQLException
+is generated, it is assumed that the query failed because of serialization problems. Then a rollback is issued
+and the transaction tried again from the first statment. This is repeated until the transaction commits.
+
+The main thread waits until all Transaction threads finished execution. Time is measured between
+starting the first thread and all of them having completed.
 
 \section*{Task 1}
 
@@ -128,7 +136,7 @@ Discuss outcome of task 2 here.
 
 \bigskip
 
-\noindent Time in hours per person: {\bf XXX}
+\noindent Time in hours per person: {\bf 4}
 
 \bigskip
 
