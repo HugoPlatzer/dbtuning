@@ -7,8 +7,6 @@
  * 
  * Lecturer: Nikolaus Augsten
  */
-package account;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.sql.*;
@@ -30,12 +28,54 @@ class Transaction extends Thread {
 	
 	@Override
 	public void run() {
-		System.out.println("transaction " + id + " started");
+		int e = 0, c = 0;
 		
-		String query = "declare @e varchar, @c varchar; SELECT balance FROM Accounts WHERE account=?;
-		PreparedStatement stmt = con.prepareStatement(query);
-		
-		System.out.println("transaction " + id + " terminated");
+		try {
+			System.out.println("transaction " + id + " started");
+
+			con.setAutoCommit(false);
+
+			String query = "SELECT balance FROM Accounts WHERE account=?";
+			PreparedStatement stmt = con.prepareStatement(query);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				e = rs.getInt(1);
+			}
+
+			query = "UPDATE Accounts SET balance=? WHERE account=?";
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1, e+1);
+			stmt.setInt(2, id);
+			stmt.executeQuery();
+
+			query = "SELECT balance FROM Accounts WHERE account=?";
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1, 0);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				c = rs.getInt(1);
+			}
+
+			query = "UPDATE Accounts SET balance=? WHERE account=?";
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1, c-1);
+			stmt.setInt(2, 0);
+			stmt.executeQuery();
+
+			con.commit();
+
+			System.out.println("transaction " + id + " terminated");
+		}
+		catch(SQLException err){
+			System.out.println(err);
+			try{			
+				con.rollback();
+			}
+			catch(SQLException err2){
+				System.out.println(err2);
+			}
+		}
 	}	
 	
 }
@@ -72,16 +112,16 @@ public class ConcurrentTransactions {
 			for (int i = 0; i < trans.length; i++) {
 				trans[i] = new Transaction(i + 1, con);
 			}
+
+			// start all transactions using a thread pool 
+			ExecutorService pool = Executors.newFixedThreadPool(maxConcurrent);				
+			for (int i = 0; i < trans.length; i++) {
+				pool.execute(trans[i]);
+			}		
+			pool.shutdown(); // end program after all transactions are done	
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		// start all transactions using a thread pool 
-		ExecutorService pool = Executors.newFixedThreadPool(maxConcurrent);				
-		for (int i = 0; i < trans.length; i++) {
-			pool.execute(trans[i]);
-		}		
-		pool.shutdown(); // end program after all transactions are done	
 		
 	}
 }
