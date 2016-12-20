@@ -9,6 +9,7 @@
  */
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.sql.*;
 
 /** 
@@ -128,12 +129,20 @@ public class ConcurrentTransactions {
 			trans[i] = new Transaction(i + 1);
 		}
 
-		// start all transactions using a thread pool 
+		// start all transactions using a thread pool
+		long t1 = System.nanoTime();
 		ExecutorService pool = Executors.newFixedThreadPool(maxConcurrent);				
 		for (int i = 0; i < trans.length; i++) {
 			pool.execute(trans[i]);
 		}		
 		pool.shutdown(); // end program after all transactions are done
+		try {
+		pool.awaitTermination(Integer.MAX_VALUE, TimeUnit.SECONDS);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		long t2 = System.nanoTime();
+		System.err.println((t2 - t1) / 1.0e9 + " s");
 	}
 }
  
