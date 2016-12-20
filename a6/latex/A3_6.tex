@@ -128,11 +128,43 @@ results of Task~1 and Task~2.
 
 \subsection*{Task 1}
 
-Discuss outcome of task 1 here.
+\subsubsection*{}
+For isolation level {\tt\small READ COMMITTED}, it can happen that
+after the third statement is executed (reading company account balance) and
+before the fourth statement is executed (writing company account balance) another
+thread commits a transaction writing the decremented balance. The first thread
+then has an outdated account balance; after it writes the decremented balance, only
+one of the two decrements is stored. This leads to the company balance not being
+completely decremented after all transactions finished. This isolation level however
+provides an almost linear performance gain from concurrent transactions.
+
+\subsubsection*{}
+Isolation level {\tt\small SERIALIZABLE} guarantees all parallel transactions
+have the same effect as if they were run in series. This implies a perfect correctness
+score, however the drawbacks of non-tuned locking are also visible: The speedup of concurrent
+transactions is far from optimal, more than 3 concurrent threads do not help throughput.
 
 \subsection*{Task 2}
 
-Discuss outcome of task 2 here.
+\subsubsection*{}
+For isolation level {\tt\small READ COMMITTED}, an {\tt\small UPDATE}
+statement acquires an exclusive lock on the rows it should change (Account number 0
+in this case) before applying changes.
+This makes the decrement {\tt\small balance = balance - 1} atomic since it
+prevents other transactions from writing their balance value while the decrement
+is in progress.
+Also no potentially stale data is stored during a transaction (like company balance
+in the first task).
+
+\subsubsection*{}
+Isolation level {\tt\small SERIALIZABLE} guarantees all parallel transactions
+have the same effect as if they were run in series. This implies a perfect correctness
+score, however the drawbacks of non-tuned 
+
+\subsubsection*{}
+As for the first transaction, {\tt\small SERIALIZABLE} also provides correctness,
+however the locking limits performance in similar fashion. {\tt\small SERIALIZABLE}
+does not provide any benefit for this kind of transaction.
 
 \bigskip
 
