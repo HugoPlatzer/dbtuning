@@ -22,102 +22,38 @@ public class DBConnect
 		String user = "hplatzer";
 		String pwd = "Aicae4paed4e";
 		String url = "jdbc:postgresql://" + host + ":" + port + "/" + database;
-		int n = 100000;
 
 		try (Connection con = DriverManager.getConnection(url, user, pwd);)
 		{
-		    String query = "DELETE FROM Employee; DELETE FROM Techdept; Delete from Student;";
+		    String query = "DELETE FROM Accounts;";
 		    con.createStatement().executeUpdate(query);
 		
-			insertTechdepts(con);
-			insertEmployees(con, n);
-			insertStudents(con, n);
+			insertAccounts(con);
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
-	private static void insertEmployees(Connection con, int n) throws SQLException
+
+	private static void insertAccounts(Connection con) throws SQLException
 	{
-		String query = "INSERT INTO Employee (ssnum, name, manager, dept, salary, numfriends) values (?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO Accounts (account, balance) values (?, ?)";
 		PreparedStatement stmt = con.prepareStatement(query);
+
+		//Company account
+		stmt.setInt(1, 0);
+		stmt.setInt(2, 100);
+		stmt.addBatch();
 		
-		for(int i = 0; i < n; i++)
+		for(int i = 1; i <= 100; i++)
 		{
-			stmt.setInt(1, i + 1);
-			stmt.setString(2, randomName(20));
-			stmt.setString(3, "Mgr"+randomUppercaseLetter());
-			stmt.setString(4, randomUppercaseLetter());
-			stmt.setInt(5, randomNum(100000));
-			stmt.setInt(6, randomNum(100));
+			stmt.setInt(1, i);
+			stmt.setInt(2, 0);
 			stmt.addBatch();
 		}
 		
 		stmt.executeBatch();
 		stmt.close();
-	}
-	
-	private static void insertStudents(Connection con, int n) throws SQLException
-	{
-		String query = "INSERT INTO Student (ssnum, name, course, grade) values (?, ?, ?, ?)";
-		PreparedStatement stmt = con.prepareStatement(query);
-		
-		for(int i = 0; i < n; i++)
-		{
-			stmt.setInt(1, i + 1);
-			stmt.setString(2, randomName(20));
-			stmt.setString(3, randomName(5));
-			stmt.setInt(4, randomNum(5));
-			stmt.addBatch();
-		}
-		
-		stmt.executeBatch();
-		stmt.close();
-	}
-	
-	private static void insertTechdepts(Connection con) throws SQLException
-	{
-		String query = "INSERT INTO Techdept (dept, manager, location) values (?, ?, ?)";
-		PreparedStatement stmt = con.prepareStatement(query);
-		
-		for(int i = 0; i < 3; i++)
-		{
-			stmt.setInt(1, i + 1);
-			stmt.setString(2, "Mgr" + randomUppercaseLetter());
-			stmt.setString(3, randomName(3));
-			stmt.addBatch();
-		}
-		
-		stmt.executeBatch();
-		stmt.close();
-	}
-	
-	private static int randomNum(int max)
-	{
-		return random.nextInt(max) + 1;
-	}
-	
-	private static String randomName(int length)
-	{
-		char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-		StringBuilder sb = new StringBuilder();
-		
-		for (int i = 0; i < length; i++)
-		{
-    		char c = chars[random.nextInt(chars.length)];
-    		sb.append(c);
-		}
-		
-		return sb.toString();
-	}
-	
-	private static String randomUppercaseLetter()
-	{
-		String[] managers = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-													"N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-													
-		return managers[random.nextInt(managers.length)];
 	}
 }
