@@ -26,11 +26,11 @@ class Transaction extends Thread {
 	}
 	
 	private void runTransaction(Connection con) throws SQLException {
-				int e = 0, c = 0;
 				System.out.println("transaction " + id + " started");
 				con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 				con.setAutoCommit(false);
 				
+				/*int e = 0, c = 0;
 
 				String query = "SELECT balance FROM Accounts WHERE account=?";
 				PreparedStatement stmt = con.prepareStatement(query);
@@ -58,6 +58,16 @@ class Transaction extends Thread {
 				stmt = con.prepareStatement(query);
 				stmt.setInt(1, c-1);
 				stmt.setInt(2, 0);
+				stmt.executeUpdate();*/
+
+				String query = "UPDATE Accounts SET balance=balance+1 WHERE account=?";
+				PreparedStatement stmt = con.prepareStatement(query);
+				stmt.setInt(1, id);
+				stmt.executeUpdate();
+
+				query = "UPDATE Accounts SET balance=balance-1 WHERE account=?";
+				stmt = con.prepareStatement(query);
+				stmt.setInt(1, 0);
 				stmt.executeUpdate();
 
 				con.commit();
