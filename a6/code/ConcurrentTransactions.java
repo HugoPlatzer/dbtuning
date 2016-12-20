@@ -39,6 +39,7 @@ class Transaction extends Thread {
 				System.out.println("transaction " + id + " started");
 
 				con.setAutoCommit(false);
+				con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 
 				String query = "SELECT balance FROM Accounts WHERE account=?";
 				PreparedStatement stmt = con.prepareStatement(query);
