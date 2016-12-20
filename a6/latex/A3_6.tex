@@ -118,13 +118,27 @@ Throughput and correctness for solution (b) with serialization level
 
 \section*{Task 3: Discussion}
 
-Discuss the outcome and explain the difference between the isolation
-levels in PostgreSQL with respect to your experiment.
+Isolation level {\tt\small SERIALIZABLE} guarantees that the effects
+of multiple transactions running in parallel are the same as running them
+in series in some order (the ordering is not guaranteed).
 
-Explain {\bf with your own words} how PostgreSQL deals with updates in
-the different isolation levels, within a transaction and within a
-single SQL command. Explicitly explain why you got the experimental
-results of Task~1 and Task~2.
+Isolation level {\tt\small READ COMMITTED} gives less strict guarantees:
+The database is always in a consistent state i.e. the changes made by a transaction
+are not visible to other transactions before the transaction commits.
+
+Possible undesired effects at this isolation level are non-repeatable reads
+and phantom reads.
+
+Non-repeatable read: When the same row is accessed twice during a transaction, it
+might have been changed by a different transaction having committed in the meantime
+like the company balance in the first task.
+
+Phantom read: When the same table is accessed twice during a transaction,
+some rows might have been added / deleted by different transactions
+having committed in the meantime.
+
+Source :
+\footnote{\label{postgresDoc}http://stackoverflow.com/questions/27978157/cluster-and-non-cluster-index-in-postgresql}
 
 \subsection*{Task 1}
 
@@ -151,24 +165,25 @@ For isolation level {\tt\small READ COMMITTED}, an {\tt\small UPDATE}
 statement acquires an exclusive lock on the rows it should change (Account number 0
 in this case) before applying changes.
 This makes the decrement {\tt\small balance = balance - 1} atomic since it
-prevents other transactions from writing their balance value while the decrement
+prevents other transactions from decrementing / writing their balance value while the decrement
 is in progress.
+
 Also no potentially stale data is stored during a transaction (like company balance
 in the first task).
 
-\subsubsection*{}
-Isolation level {\tt\small SERIALIZABLE} guarantees all parallel transactions
-have the same effect as if they were run in series. This implies a perfect correctness
-score, however the drawbacks of non-tuned 
+Our assumption of such an {\tt\small UPDATE} being atomic is further confirmed by
+a very similar query being mentioned in the Postgres documentation as an example
+where {\tt\small UPDATE} on {\tt\small READ COMMITTED} has no undesirable effects,
+see \ref{postgresDoc} first example in chapter "13.2.1. Read Committed Isolation Level".
 
 \subsubsection*{}
 As for the first transaction, {\tt\small SERIALIZABLE} also provides correctness,
-however the locking limits performance in similar fashion. {\tt\small SERIALIZABLE}
+however locking limits performance in similar fashion. {\tt\small SERIALIZABLE}
 does not provide any benefit for this kind of transaction.
 
 \bigskip
 
-\noindent Time in hours per person: {\bf 4}
+\noindent Time in hours per person: {\bf 4.5}
 
 \bigskip
 
