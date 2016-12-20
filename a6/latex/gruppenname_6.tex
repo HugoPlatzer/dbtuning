@@ -1,0 +1,143 @@
+\documentclass[11pt]{scrartcl}
+
+\usepackage[top=2cm]{geometry}
+\usepackage{url,hyperref}
+
+\title{
+  \textbf{\large Database Tuning -- Assignment 6}\\
+  Concurrency Tuning
+}
+
+\author{
+ Group Name (e.g. A1, B5, B3)\\
+ \large Lastname1 Firstname1, StudentID1 \\
+ \large Lastname2 Firstname2, StudentID2 \\
+ \large Lastname3 Firstname3, StudentID3 
+}
+
+\begin{document}
+
+\maketitle
+
+\noindent
+{\it Notes:}
+
+\begin{itemize}
+\item You will need to run transactions concurrently using threads in
+  Java. See\\ \url{http://dbresearch.uni-salzburg.at/teaching/2016ws/dbt/account.zip}
+  for an example.
+\end{itemize}
+
+\section*{Task 1}
+
+\subsection*{Read Committed}
+
+Throughput and correctness for solution (a) with serialization level
+{\tt\small READ COMMITTED}.
+
+\bigskip
+
+\begin{tabular}{c|c|c}
+  \#Concurrent Transactions & Throughput [transactions/sec] & Correctness
+  \\\hline
+  1 & & \\
+  2 & & \\
+  3 & & \\
+  4 & & \\
+  5 & & \\    
+\end{tabular}
+
+\medskip
+
+\subsection*{Serializable}
+
+Throughput and correctness for solution (a) with serialization level
+{\tt\small SERIALIZABLE}.
+
+\bigskip
+
+\begin{tabular}{c|c|c}
+  \#Concurrent Transactions & Throughput [transactions/sec] & Correctness
+  \\\hline
+  1 & & \\
+  2 & & \\
+  3 & & \\
+  4 & & \\
+  5 & & \\    
+\end{tabular}
+
+\medskip
+
+\section*{Task 2}
+
+\subsection*{Read Committed}
+
+Throughput and correctness for solution (b) with serialization level
+{\tt\small READ COMMITTED}.
+
+\bigskip
+
+\begin{tabular}{c|c|c}
+  \#Concurrent Transactions & Throughput [transactions/sec] & Correctness
+  \\\hline
+  1 & & \\
+  2 & & \\
+  3 & & \\
+  4 & & \\
+  5 & & \\    
+\end{tabular}
+
+\medskip
+
+\subsection*{Serializable}
+
+Throughput and correctness for solution (b) with serialization level
+{\tt\small SERIALIZABLE}.
+
+\bigskip
+
+\begin{tabular}{c|c|c}
+  \#Concurrent Transactions & Throughput [transactions/sec] & Correctness
+  \\\hline
+  1 & & \\
+  2 & & \\
+  3 & & \\
+  4 & & \\
+  5 & & \\    
+\end{tabular}
+
+\medskip
+
+\section*{Task 3: Discussion}
+
+Discuss the outcome and explain the difference between the isolation
+levels in PostgreSQL with respect to your experiment.
+
+Explain {\bf with your own words} how PostgreSQL deals with updates in
+the different isolation levels, within a transaction and within a
+single SQL command. Explicitly explain why you got the experimental
+results of Task~1 and Task~2.
+
+\subsection*{Task 1}
+
+Discuss outcome of task 1 here.
+
+\subsection*{Task 2}
+
+Discuss outcome of task 2 here.
+
+\bigskip
+
+\noindent Time in hours per person: {\bf XXX}
+
+\bigskip
+
+\begin{center}
+  \begin{tabular}{c}
+    \hline
+    {\bf Important:} Reference your information sources!
+    \\\hline
+  \end{tabular}
+\end{center}
+
+\end{document}
