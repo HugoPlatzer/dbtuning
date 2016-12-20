@@ -24,22 +24,12 @@ class Transaction extends Thread {
 		this.id = id;
 	}
 	
-	@Override
-	public void run() {
-		String host = "biber.cosy.sbg.ac.at";
-		String port = "5432";
-		String database = "dbtuning_ws2016";
-		String user = "hplatzer";
-		String pwd = "Aicae4paed4e";
-		String url = "jdbc:postgresql://" + host + ":" + port + "/" + database;
-		int e = 0, c = 0;
-		
-		try (Connection con = DriverManager.getConnection(url, user, pwd);) {
-			try {
+	private void runTransaction(Connection con) throws SQLException {
+				int e = 0, c = 0;
 				System.out.println("transaction " + id + " started");
-
-				con.setAutoCommit(false);
 				con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+				con.setAutoCommit(false);
+				
 
 				String query = "SELECT balance FROM Accounts WHERE account=?";
 				PreparedStatement stmt = con.prepareStatement(query);
@@ -71,20 +61,43 @@ class Transaction extends Thread {
 
 				con.commit();
 
-				System.out.println("transaction " + id + " terminated");
-			}
-			catch(SQLException err){
-				err.printStackTrace();
-				try{			
-					con.rollback();
-				}
-				catch(SQLException err2){
-					err2.printStackTrace();
-				}
-			}
+				System.out.println("transaction " + id + " successful");
+	}
+	
+	@Override
+	public void run() {
+		String host = "biber.cosy.sbg.ac.at";
+		String port = "5432";
+		String database = "dbtuning_ws2016";
+		String user = "hplatzer";
+		String pwd = "Aicae4paed4e";
+		String url = "jdbc:postgresql://" + host + ":" + port + "/" + database;
+		Connection con = null;
+		try {
+			con = DriverManager.getConnection(url, user, pwd);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		catch(SQLException err3){
-			err3.printStackTrace();
+		boolean didComplete = false;
+		while (!didComplete) {
+				didComplete = true;
+				try {
+					runTransaction(con);
+				} catch (SQLException e) {
+					System.out.println("transaction " + id + " rolled back");
+					didComplete = false;
+					//e.printStackTrace();
+					try {
+						con.rollback();
+					} catch (SQLException e2) {
+						e2.printStackTrace();
+					}
+				}
+		}
+		try {
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}	
 	
