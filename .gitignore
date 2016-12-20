@@ -6,3 +6,4 @@
 *.jar
 *.fdb_latexmk
 *.fls
+*.tsv
