@@ -124,18 +124,60 @@ $T_1$ can update the same account? Explain.}
 
 \medskip
 
-[...chopping graph...]
+\begin{tikzpicture}[every node/.style={draw,circle,minimum size=2em,inner sep=1}]
+\node[draw=none] (T1) at (0, 0) {$T_1$:};
+\node (T1_1) at (1, 0) {Ra};
+\node (T1_2) at (2, 0) {Rb};
+\node (T1_3) at (3, 0) {Wb};
+\node (T1_4) at (4, 0) {Re};
+\node[draw=none] (T2) at (0, -1) {$T_2$:};
+\node (T2_1) at (1, -1) {Rb};
+\node (T2_2) at (2, -1) {Re};
+\node[draw=none] (T3) at (0, -2) {$T_3$:};
+\node (T3_1) at (1, -2) {Ra};
+\node (T3_2) at (2, -2) {Wa};
+\node (T3_3) at (3, -2) {Re};
+\node[draw=none] (T4) at (0, -3) {$T_4$:};
+\node (T4_1) at (1, -3) {Ra};
+\node (T4_2) at (2, -3) {Wc};
+\node[draw=none] (T5) at (0, -4) {$T_5$:};
+\node (T5_1) at (1, -4) {Rc};
+\node[draw=none] (T6) at (0, -5) {$T_6$:};
+\node (T6_1) at (1, -5) {Rc};
+\node (T6_2) at (2, -5) {Wd};
+\node (T6_3) at (3, -5) {Wc};
+\node (T6_4) at (4, -5) {Rb};
+
+\draw[draw=red,line width=1pt] (T1_1) -- (T1_2);
+\draw[draw=red,line width=1pt] (T1_2) -- (T1_3);
+\draw[line width=1pt] (T1_3) -- (T1_4);
+\draw[draw=blue,line width=1pt] (T1_1) -- (T3_2);
+\draw[draw=blue,line width=1pt] (T1_3) -- (T2_1);
+\draw[draw=blue,line width=1pt] (T1_3) -- (T6_4);
+\draw[line width=1pt] (T2_1) -- (T2_2);
+\draw[line width=1pt] (T3_1) -- (T3_2);
+\draw[line width=1pt] (T3_2) -- (T3_3);
+\draw[draw=blue,line width=1pt] (T3_2) -- (T4_1);
+\draw[draw=red,line width=1pt] (T4_1) -- (T4_2);
+\draw[draw=blue,line width=1pt] (T4_2) -- (T5_1);
+\draw[draw=blue,line width=1pt] (T4_2) -- (T6_1);
+\draw[draw=blue,line width=1pt] (T4_2) -- (T6_3);
+\draw[draw=blue,line width=1pt] (T5_1) -- (T6_3);
+\draw[draw=red,line width=1pt] (T6_1) -- (T6_2);
+\draw[draw=red,line width=1pt] (T6_2) -- (T6_3);
+\draw[draw=red,line width=1pt] (T6_3) -- (T6_4);
+\end{tikzpicture}
 
 \medskip
 
 \noindent Finest correct chopping:
 \begin{enumerate}
-\item[T1:]
-\item[T2:]
-\item[T3:] 
-\item[T4:]
-\item[T5:]
-\item[T6:] 
+\item[T11:]Ra,Rb,Wb, T12: Re
+\item[T21:]Rb, T22: Re
+\item[T31:]Ra, T32: Wa, T33: Re
+\item[T4:]Ra,Wc
+\item[T5:]Rc
+\item[T6:]Rc,Wd,Wc,Rb
 \end{enumerate}
 
 
@@ -143,17 +185,51 @@ $T_1$ can update the same account? Explain.}
 
 \medskip
 
-[...chopping graph...]
+\begin{tikzpicture}[every node/.style={draw,circle,minimum size=2em,inner sep=1}]
+\node[draw=none] (T1) at (0, 0) {$T_1$:};
+\node (T1_1) at (1, 0) {Ra};
+\node (T1_2) at (2, 0) {Rb};
+\node (T1_3) at (3, 0) {Wb};
+\node (T1_4) at (4, 0) {Re};
+\node[draw=none] (T2) at (0, -1) {$T_2$:};
+\node (T2_1) at (1, -1) {Rb};
+\node (T2_2) at (2, -1) {Re};
+\node[draw=none] (T3) at (0, -2) {$T_3$:};
+\node (T3_1) at (1, -2) {Ra};
+\node (T3_2) at (2, -2) {Wa};
+\node (T3_3) at (3, -2) {Re};
+\node[draw=none] (T5) at (0, -3) {$T_5$:};
+\node (T5_1) at (1, -3) {Rc};
+\node[draw=none] (T6) at (0, -4) {$T_6$:};
+\node (T6_1) at (1, -4) {Rc};
+\node (T6_2) at (2, -4) {Wd};
+\node (T6_3) at (3, -4) {Wc};
+\node (T6_4) at (4, -4) {Rb};
+
+\draw[line width=1pt] (T1_1) -- (T1_2);
+\draw[line width=1pt] (T1_2) -- (T1_3);
+\draw[line width=1pt] (T1_3) -- (T1_4);
+\draw[draw=blue,line width=1pt] (T1_1) -- (T3_2);
+\draw[draw=blue,line width=1pt] (T1_3) -- (T2_1);
+\draw[draw=blue,line width=1pt] (T1_3) -- (T6_4);
+\draw[line width=1pt] (T2_1) -- (T2_2);
+\draw[line width=1pt] (T3_1) -- (T3_2);
+\draw[line width=1pt] (T3_2) -- (T3_3);
+\draw[draw=blue,line width=1pt] (T5_1) -- (T6_3);
+\draw[line width=1pt] (T6_1) -- (T6_2);
+\draw[line width=1pt] (T6_2) -- (T6_3);
+\draw[line width=1pt] (T6_3) -- (T6_4);
+\end{tikzpicture}
 
 \medskip
 
 \noindent Finest correct chopping:
 \begin{enumerate}
-\item[T1:]
-\item[T2:]
-\item[T3:] 
-\item[T5:]
-\item[T6:] 
+\item[T11:]Ra, T12: Rb, T13: Wb, T14: Re
+\item[T21:]Rb, T22: Re
+\item[T31:]Ra, T32: Wa, T33: Re
+\item[T5:]Rc
+\item[T61:]Rc, T62: Wd, T63: Wc, T64: Re
 \end{enumerate}
 
 
