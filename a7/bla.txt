@@ -1,7 +1,8 @@
 Add money to an account and update the corresponding branch balance. No two transactions add money to the same account.
 ---------------------------------------------------------------------
-UPDATE Account SET a_balance=a_balance+X WHERE accountID=Y
-UPDATE Branch SET b_balance=b_balance-X WHERE branch=Z
+Z <- SELECT branch FROM Account WHERE accountID=X
+UPDATE Account SET a_balance=a_balance+Y WHERE accountID=X
+UPDATE Branch SET b_balance=b_balance-Y WHERE branch=Z
 
 R(Account), W(Account), R(Branch), W(Branch)
 
@@ -17,8 +18,11 @@ Compare  the  balance  of  each  branch  with  the  sum  of  the account balance
 ---------------------------------------------------------------------
 X <- SELECT branch FROM Branch
 foreach X
-    SELECT sum(a_balance) FROM Account WHERE branch=X
-    SELECT sum(b_balance) FROM Branch WHERE branch!=X
+    Y <- SELECT sum(a_balance) FROM Account WHERE branch=X
+    Z <- SELECT b_balance FROM Branch WHERE branch!=X
+    foreach Z
+        COMPARE Y Z
+    end
 end
 
-R(Branches), R(Branch), R(Accounts)
+R(Branches), R(Account), R(Accounts)
