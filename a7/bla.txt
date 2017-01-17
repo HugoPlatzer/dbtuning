@@ -19,10 +19,8 @@ Compare  the  balance  of  each  branch  with  the  sum  of  the account balance
 X <- SELECT branch FROM Branch
 foreach X
     Y <- SELECT sum(a_balance) FROM Account WHERE branch=X
-    Z <- SELECT b_balance FROM Branch WHERE branch!=X
-    foreach Z
-        COMPARE Y Z
-    end
+    Z <- SELECT b_balance FROM Branch WHERE branch=X
+    COMPARE Y Z
 end
 
-R(Branches), R(Account), R(Accounts)
+R(Branche), R(Account), R(Branch)
