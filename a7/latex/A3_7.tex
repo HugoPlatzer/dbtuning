@@ -88,21 +88,32 @@ return SUCCESS
 \noindent
 \begin{tikzpicture}[every node/.style={draw,circle,minimum size=2em,inner sep=1}]
 \node[draw=none] (T1) at (0, 0) {$T_1$:};
-\node (T1_1) at (1, 0) {Rx};
-\node (T1_2) at (2, 0) {Wx};
 \node[draw=none] (T2) at (0, -1) {$T_2$:};
-\node (T2_1) at (1, -1) {Wx};
+\node[draw=none] (T3) at (0, -2) {$T_3$:};
+\node (T1_1) at (1, 0) {$R_a$};
+\node (T1_2) at (2, 0) {$R_b$};
+\node (T1_3) at (3, 0) {$W_a$};
+\node (T1_4) at (4, 0) {$W_a$};
+\node (T2_1) at (1, -1) {$R_a$};
+\node (T3_1) at (1, -2) {$R_a$};
+\node (T3_2) at (2, -2) {$R_b$};
 
-\draw[draw=red,line width=1pt] (T1_1) -- (T2_1);
+\draw[line width=1pt] (T1_1) -- (T1_2);
+\draw[line width=1pt] (T1_2) -- (T1_3);
+\draw[color=red, line width=1pt] (T1_3) -- (T1_4);
+\draw[color=red, line width=1pt] (T3_1) -- (T3_2);
+\draw[draw = blue, line width=1pt] (T2_1) -- (T1_3);
+\draw[draw = blue, line width=1pt] (T3_1) -- (T1_3);
+\draw[draw = blue, line width=1pt] (T3_2) -- (T1_4);
 \end{tikzpicture}
 
 \medskip
 
 \noindent Finest correct chopping:
 \begin{enumerate}
-\item[T1:]
-\item[T2:]
-\item[T3:] 
+\item[$T_1$:] $T_{11}$ : $R_a$ \qquad $T_{12}$ : $R_b$ \qquad $T_{13}$ : $W_a$ $W_b$ 
+\item[$T_2$:] $R_a$
+\item[$T_3$:] $R_a$, $R_b$
 \end{enumerate}
 
 \subsection*{(d) Two Transactions Update the Same Account}
