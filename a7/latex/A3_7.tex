@@ -19,18 +19,6 @@
 
 \maketitle
 
-{\it Notes:}
-
-\begin{itemize}
-\item The chopping graphs may also be drawn by hand and attached as a
-  hard copy on paper. In the case of drawings on paper, you need to
-  hand in the drawings during the lab.
-\item The chopping graphs need to show all S- and C-edges, and you
-  need to cross out (or otherwise mark) the S-edges that must be
-  removed to get a correct chopping. Also show the write list for each
-  chopping graph.
-\end{itemize}
-
 \section*{Task 1:  Bank Accounts}
 
 \subsection*{(a) SQL Queries}
@@ -42,23 +30,35 @@ transaction.}
 
 {\small
 \begin{verbatim}
-...
+A - Account ID to deposit into
+X - Amount of money to be deposited
+
+D <- SELECT accountID, branch, a_balance FROM Account WHERE accountID = A;
+B <- SELECT b_balance FROM Branch WHERE branch = D.branch;
+UPDATE Account SET a_balance = D.a_balance + X WHERE accountID = D.accountID;
+UPDATE BRANCH SET b_balance = B + X WHERE branch = D.branch; 
 \end{verbatim}
 }
 
 \paragraph{Transaction T2}
-
 {\small
 \begin{verbatim}
-...
+A - Account ID whose balance should be read
+
+SELECT a_balance FROM Account WHERE accountID = A;
 \end{verbatim}
 }
 
 \paragraph{Transaction T3}
-
 {\small
 \begin{verbatim}
-...
+for B in (SELECT branch FROM Branch):
+    D1 <- SELECT sum(a_balance) FROM Account WHERE branch = B;
+    D2 <- SELECT b_balance FROM Branch where branch = B;
+    if D1 != D2:
+        return FAIL
+
+return SUCCESS
 \end{verbatim}
 }
 
@@ -73,9 +73,9 @@ transaction.}
   data items that represent all possible conflicts in the scenario.}
 
 \begin{enumerate}
-\item[T1:]
-\item[T2:]
-\item[T3:] 
+\item[T1:] R($a_1$), R($b_1$), W($a_1$), W($b_1$)
+\item[T2:] R($a_1$)
+\item[T3:] R($a_1$), R($b_1$)
 \end{enumerate}
 
 \subsection*{(c) Chopping Graph}
