@@ -4,7 +4,7 @@ Z <- SELECT branch FROM Account WHERE accountID=X
 UPDATE Account SET a_balance=a_balance+Y WHERE accountID=X
 UPDATE Branch SET b_balance=b_balance-Y WHERE branch=Z
 
-R(Account), W(Account), R(Branch), W(Branch)
+R(Account), R(Account), W(Account), R(Branch), W(Branch)
 
 =====================================================================
 Read an account balance.
@@ -22,4 +22,4 @@ foreach X
     COMPARE X.b_balance Y
 end
 
-R(Branch), R(Account)
+R(Branch), count(X) * R(Account)
