@@ -2,6 +2,7 @@
 
 \usepackage[top=2cm]{geometry}
 \usepackage{url}
+\usepackage{tikz}
 
 \title{
   \textbf{\large Database Management and Tuning -- Assignment 7}\\
@@ -85,7 +86,15 @@ transaction.}
 \medskip
 
 \noindent
-[...chopping graph...]
+\begin{tikzpicture}[every node/.style={draw,circle,minimum size=2em,inner sep=1}]
+\node[draw=none] (T1) at (0, 0) {$T_1$:};
+\node (T1_1) at (1, 0) {Rx};
+\node (T1_2) at (2, 0) {Wx};
+\node[draw=none] (T2) at (0, -1) {$T_2$:};
+\node (T2_1) at (1, -1) {Wx};
+
+\draw[draw=red,line width=1pt] (T1_1) -- (T2_1);
+\end{tikzpicture}
 
 \medskip
 
